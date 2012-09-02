@@ -1,0 +1,23 @@
+# Application dependencies
+#transitiveDependencies: true  
+transitiveDependencies: true
+require:
+    - play
+    - commons-codec -> commons-codec  1.6
+    - io.netty -> netty 3.5.6.Final
+#  - org.msgpack -> msgpack-rpc 0.7.0
+#  - org.msgpack -> msgpack 0.6.6
+
+
+repositories:
+#  - msgpack:
+#     type: iBiblio
+#    root: "http://msgpack.org/maven2/"
+#   contains:
+#     - org.msgpack -> *    
+    - jboss:
+        type: iBiblio
+        root: "http://repository.jboss.org/nexus/content/groups/public-jboss/"
+        contains:
+           - org.jboss -> *
+           - org.msgpack -> *
