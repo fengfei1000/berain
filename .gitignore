@@ -7,6 +7,7 @@
 .metadata
 bin/
 tmp/
+target/
 *.tmp
 *.bak
 *.swp
@@ -14,8 +15,19 @@ tmp/
 local.properties
 .classpath
 .settings/
+*/.settings/*
 .loadpath
-
+*.class
+eclise/
+spruce/eclipse
+sprucy/eclipse
+upload/*
+*/modules/*
+*/upload/*
+*/tmp/*
+*/logs/*
+*/log/*
+*/eclipse/*
 # External tool builders
 .externalToolBuilders/
 
@@ -161,3 +173,43 @@ pip-log.txt
 
 # Mac crap
 .DS_Store
+
+/target
+/lib
+*/lib/commons-cli-1.0.jar
+*/lib/commons-cli-1.0-javadoc.jar
+*/lib/commons-cli-1.0-sources.jar
+*/lib/commons-lang-2.0.jar
+*/lib/commons-lang-2.0-javadoc.jar
+*/lib/commons-lang-2.0-sources.jar
+*/lib/commons-logging-1.0.jar
+/app/corbel.ttf
+/app/corbelb.ttf
+/app/corbeli.ttf
+/app/corbelz.ttf
+/app/meiryo.ttc
+/app/meiryob.ttc
+*/lib/*
+*/lib/commons-cli-1.0.jar
+*/lib/commons-cli-1.0-javadoc.jar
+*/lib/commons-cli-1.0-sources.jar
+*/lib/commons-lang-2.0.jar
+*/lib/commons-lang-2.0-javadoc.jar
+*/lib/commons-lang-2.0-sources.jar
+*/lib/commons-logging-1.0.jar
+*/lib/commons-cli-1.0.jar
+*/lib/commons-cli-1.0-javadoc.jar
+*/lib/commons-cli-1.0-sources.jar
+*/lib/commons-lang-2.0.jar
+*/lib/commons-lang-2.0-javadoc.jar
+*/lib/commons-lang-2.0-sources.jar
+*/lib/commons-logging-1.0.jar
+*/lib/commons-pool-1.5.5.jar
+*/lib/jedis-2.1.0.jar
+*/lib/metadata-extractor-2.6.2.jar
+*/lib/mongo-java-driver-2.8.0.jar
+*/lib/xercesImpl-2.8.1.jar
+*/lib/xml-apis-1.3.03.jar
+*/lib/xmpcore-5.1.2.jar
+*/lib/xmpcore.jar
+/sprucy/lib/mongo-java-driver-2.9.0-RC1.jar
