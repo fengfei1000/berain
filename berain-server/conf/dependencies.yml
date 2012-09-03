@@ -1,20 +1,24 @@
 # Application dependencies
-#transitiveDependencies: true  
-transitiveDependencies: true
+#transitiveDependencies: true
+transitiveDependencies: false
+
 require:
-    - play
-    - commons-codec -> commons-codec  1.6
-    - io.netty -> netty 3.5.6.Final
-#  - org.msgpack -> msgpack-rpc 0.7.0
-#  - org.msgpack -> msgpack 0.6.6
+    - play 1.2.5
+    #- io.netty -> netty 3.5.6.Final
+    - org.slf4j -> slf4j-api 1.6.6 
+    - org.slf4j -> slf4j-log4j12 1.6.6 
+    - log4j -> log4j 1.2.15 
+    - com.netflix.curator -> curator-client 1.1.16
+         transitive:false 
+    - com.netflix.curator -> curator-framework 1.1.16
+         transitive:false 
+    - com.google.guava -> guava 13.0
+    - org.apache.zookeeper -> zookeeper 3.4.3
+         transitive:false 
+    - commons-codec -> commons-codec 1.6 
 
 
-repositories:
-#  - msgpack:
-#     type: iBiblio
-#    root: "http://msgpack.org/maven2/"
-#   contains:
-#     - org.msgpack -> *    
+repositories: 
     - jboss:
         type: iBiblio
         root: "http://repository.jboss.org/nexus/content/groups/public-jboss/"
