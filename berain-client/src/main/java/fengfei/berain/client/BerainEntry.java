@@ -32,7 +32,41 @@ public class BerainEntry {
 
 	@Override
 	public String toString() {
-		return "BerainEntry [key=" + key + ", value=" + value + ", path=" + path + "]";
+		return "BerainEntry [key=" + key + ", value=" + value + ", path="
+				+ path + "]";
+	}
+
+	public boolean booleanValue() {
+		return "true".equals(value) || "on".equals(value)
+				|| "yes".equals(value) || !"0".equals(value);
+	}
+
+	public double doubleValue() {
+		return Double.parseDouble(value);
+	}
+
+	public float floatValue() {
+		return Float.parseFloat(value);
+	}
+
+	public int intValue() {
+		return Integer.parseInt(value);
+	}
+
+	public short shortValue() {
+		return Short.parseShort(value);
+	}
+
+	public byte byteValue() {
+		return Byte.parseByte(value);
+	}
+
+	public char charValue() {
+		return value.charAt(0);
+	}
+
+	public long longValue() {
+		return Long.parseLong(value);
 	}
 
 }
