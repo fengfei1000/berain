@@ -1,6 +1,7 @@
 CREATE TABLE `rain_config` (
   `id` bigint(64) unsigned NOT NULL AUTO_INCREMENT,
   `pid` bigint(64) unsigned NOT NULL DEFAULT '0',
+  `path` varchar(760) NOT NULL,
   `skey` varchar(128) COLLATE utf8_bin NOT NULL,
   `svalue` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `smd5` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT '',
