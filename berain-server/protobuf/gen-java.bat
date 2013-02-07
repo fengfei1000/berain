@@ -1,0 +1,1 @@
+protoc -I=./ --java_out=../app ./berain.proto

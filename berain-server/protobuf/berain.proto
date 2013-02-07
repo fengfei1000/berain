@@ -1,0 +1,92 @@
+option java_package = "fengfei.berain.server.protobuf";
+option java_outer_classname = "BerainProto";
+option java_generic_services = true;
+message StatusResult {
+	required int32 code = 1;
+	required string message = 2;
+}
+
+message CalcResponse {
+	required int32 result = 1;
+}
+
+message LoginRequest {
+	required string user = 1;
+	required string password = 2;
+}
+
+message LoginResponse {
+	required StatusResult result = 1;
+	required int32 id = 2;
+}
+
+message EntryRequest {
+	required string key = 1;
+	optional string value = 2;
+}
+
+message CopyRequest {
+	required string originalId = 1;
+	optional string newid = 2;
+}
+
+enum EventType {
+	None = -1;
+	Created = 1;
+	Deleted = 2;
+	DataChanged = 3;
+	ChildrenChanged = 4;
+}
+
+message WatchedEvent {
+	required EventType eventType = 1;
+	required string path = 2;
+}
+
+message WatchableRequest {
+	required string id = 1;
+	required EventType eventType = 2;
+}
+
+message BoolResponse {
+	required StatusResult result = 1;
+	required bool successed = 2;
+}
+
+message BerainEntry {
+	required string key = 2;
+	required string value = 3;
+	required string path = 4;
+}
+
+message BerainEntryResponse {
+	required StatusResult result = 1;
+	repeated BerainEntry entrys = 2;
+}
+
+message StringResponse {
+	required StatusResult result = 1;
+	required string value = 2;
+}
+
+service BerainService {
+	rpc login (LoginRequest) returns (LoginResponse);
+
+	// --------------------------write-----------------------------//
+	rpc update (EntryRequest) returns (BoolResponse);
+	rpc create (EntryRequest) returns (BoolResponse);
+	rpc delete (EntryRequest) returns (BoolResponse);
+	rpc copy (CopyRequest) returns (BoolResponse);
+
+	// --------------------------read-----------------------------//
+	rpc nextChildren (EntryRequest) returns (BerainEntryResponse);
+	rpc get (EntryRequest) returns (StringResponse);
+	rpc getFull (EntryRequest) returns (BerainEntryResponse);
+	rpc exists (EntryRequest) returns (BoolResponse);
+
+	// --------------------------Event-----------------------------//
+	rpc addWatchable (WatchableRequest) returns (BoolResponse);
+	rpc removeWatchable (WatchableRequest) returns (BoolResponse);
+	rpc removeAllListener (EntryRequest) returns (BoolResponse);
+}
+

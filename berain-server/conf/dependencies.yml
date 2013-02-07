@@ -16,7 +16,7 @@ require:
     - org.apache.zookeeper -> zookeeper 3.4.3
          transitive:false 
     - commons-codec -> commons-codec 1.6 
-
+    - com.google.protobuf -> protobuf-java 2.4.1
 
 repositories: 
     - jboss:

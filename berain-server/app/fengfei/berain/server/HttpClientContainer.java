@@ -8,44 +8,31 @@ import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.jboss.netty.channel.Channel;
-import org.jboss.netty.channel.group.ChannelGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ClientContainer {
+public class HttpClientContainer {
 
-	private final static Logger logger = LoggerFactory
-			.getLogger(ClientContainer.class);
-	private static ClientContainer clientContainer = new ClientContainer();
-	private ChannelGroup channelGroup;
+	private final static Logger logger = LoggerFactory.getLogger(HttpClientContainer.class);
+	private static HttpClientContainer clientContainer = new HttpClientContainer();
 	private final Lock lock = new ReentrantLock();
-	private Map<Integer, WatchableContainer> watchables = new HashMap<>();
-	private Map<Integer, WatchedContainer> watcheds = new HashMap<>();
-	private Map<Integer, Long> lastUpdated = new HashMap<>();
+	private Map<String, WatchableContainer> watchables = new HashMap<>();
+	private Map<String, WatchedContainer> watcheds = new HashMap<>();
+	private Map<String, Long> lastUpdated = new HashMap<>();
 
-	public static ClientContainer get() {
+	public static HttpClientContainer get() {
 		return clientContainer;
 	}
 
-	private ClientContainer() {
+	private HttpClientContainer() {
 
 	}
 
-	public void setChannelGroup(ChannelGroup channelGroup) {
-		this.channelGroup = channelGroup;
-	}
-
-	public Channel getChannel(Integer id) {
-		return channelGroup.find(id);
-	}
-
-	public Map<Integer, WatchableContainer> getWatchables() {
+	public Map<String, WatchableContainer> getWatchables() {
 		return watchables;
 	}
 
-	public WatchableEvent varifyWatchableEvent(Integer clientId, String path,
-			int eventType) {
+	public WatchableEvent varifyWatchableEvent(String clientId, String path, int eventType) {
 		WatchableContainer container = watchables.get(clientId);
 		if (container == null) {
 			container = new WatchableContainer();
@@ -64,15 +51,15 @@ public class ClientContainer {
 		return event;
 	}
 
-	public Map<Integer, Long> getLastUpdated() {
+	public Map<String, Long> getLastUpdated() {
 		return lastUpdated;
 	}
 
-	public void cleanLastUpdated(Integer clientId) {
+	public void cleanLastUpdated(String clientId) {
 		lastUpdated.remove(clientId);
 	}
 
-	public Map<String, Set<WatchedEvent>> getAllWatchedEvents(Integer clientId) {
+	public Map<String, Set<WatchedEvent>> getAllWatchedEvents(String clientId) {
 		WatchedContainer container = watcheds.get(clientId);
 		if (container == null) {
 			return null;
@@ -81,7 +68,7 @@ public class ClientContainer {
 		return container.getWatchedEvents();
 	}
 
-	public Map<Integer, WatchedContainer> getWatcheds() {
+	public Map<String, WatchedContainer> getWatcheds() {
 		return watcheds;
 	}
 
@@ -89,19 +76,14 @@ public class ClientContainer {
 		try {
 			lock.lock();
 
-			for (Entry<Integer, WatchableContainer> entry : watchables
-					.entrySet()) {
-				Integer clientId = entry.getKey();
-				Channel channel=getChannel(clientId);
-		 
+			for (Entry<String, WatchableContainer> entry : watchables.entrySet()) {
+				String clientId = entry.getKey();
 				WatchableContainer watchableContainer = entry.getValue();
-				WatchableEvent event = watchableContainer.getWatchableEvent(
-						path, eventType);
+				WatchableEvent event = watchableContainer.getWatchableEvent(path, eventType);
 				if (event != null) {
 					WatchedContainer watchedContainer = watcheds.get(clientId);
 					if (watchedContainer == null) {
-						watchedContainer = new WatchedContainer(
-								watchableContainer);
+						watchedContainer = new WatchedContainer(watchableContainer);
 					}
 					watchedContainer.addWatchedEvent(path, eventType);
 
@@ -121,15 +103,14 @@ public class ClientContainer {
 		addWatchedEvent(event.getPath(), event.getEventType().getIntValue());
 	}
 
-	public void removeWatchedEvent(Integer clientId, String path, int eventType) {
+	public void removeWatchedEvent(String clientId, String path, int eventType) {
 
 		try {
 			lock.lock();
 
 			WatchedContainer watchedContainer = watcheds.get(clientId);
 			if (watchedContainer != null) {
-				watchedContainer.removeWatchedEvent(new WatchedEvent(eventType,
-						path));
+				watchedContainer.removeWatchedEvent(new WatchedEvent(eventType, path));
 				if (watchedContainer.size() <= 0) {
 					watcheds.remove(clientId);
 				}
@@ -143,7 +124,7 @@ public class ClientContainer {
 		}
 	}
 
-	public void addWatchableEvent(Integer clientId, WatchableEvent event) {
+	public void addWatchableEvent(String clientId, WatchableEvent event) {
 		try {
 			lock.lock();
 			WatchableContainer watchableContainer = watchables.get(clientId);
@@ -161,7 +142,7 @@ public class ClientContainer {
 		}
 	}
 
-	public void removeWatchableEvent(Integer clientId, WatchableEvent event) {
+	public void removeWatchableEvent(String clientId, WatchableEvent event) {
 
 		try {
 			lock.lock();
@@ -178,7 +159,7 @@ public class ClientContainer {
 		}
 	}
 
-	public void clearAllWatchableEvent(Integer clientId) {
+	public void clearAllWatchableEvent(String clientId) {
 		try {
 			lock.lock();
 			WatchableContainer watchableContainer = watchables.get(clientId);
@@ -195,7 +176,7 @@ public class ClientContainer {
 
 	}
 
-	public void clearAllWatchedEvent(Integer clientId) {
+	public void clearAllWatchedEvent(String clientId) {
 		try {
 			lock.lock();
 			WatchedContainer watchedContainer = watcheds.get(clientId);

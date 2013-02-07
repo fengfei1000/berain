@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 public class WatchedCleaner extends Thread {
 
 	private final static Logger logger = LoggerFactory.getLogger(WatchedCleaner.class);
-	private static ClientContainer container = ClientContainer.get();
+	private static HttpClientContainer container = HttpClientContainer.get();
 	private static long timeMillis = 600000;
 
 	@Override

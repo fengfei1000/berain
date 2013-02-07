@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Index;
 
-import fengfei.berain.server.ClientContainer;
+import fengfei.berain.server.HttpClientContainer;
 import fengfei.berain.server.EventType;
 import fengfei.berain.server.Focus;
 import fengfei.berain.server.WatchedEvent;
@@ -217,5 +217,5 @@ public class RainModel extends GenericModel {
 		return t;
 	}
 
-	private static ClientContainer container = ClientContainer.get();
+	private static HttpClientContainer container = HttpClientContainer.get();
 }
