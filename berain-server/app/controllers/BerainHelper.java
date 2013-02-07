@@ -21,14 +21,14 @@ import fengfei.berain.server.Focus;
 import fengfei.berain.server.WatchableEvent;
 import fengfei.berain.server.WatchedEvent;
 
-public class BerainService {
+public class BerainHelper {
 
 	public static final String ROOT_PATH = "/";
 	public static final String SEPARATOR = "/";
 	private static HttpClientContainer container = HttpClientContainer.get();
 
 	// --------------------------write-----------------------------//
-	public static BerainResult update(String id, String value) {
+	public static BerainResult<Boolean> update(String id, String value) {
 		try {
 			List<RainModel> models = RainModel.find("path=?", id).fetch();
 			if (models != null && models.size() >= 1) {
@@ -46,7 +46,7 @@ public class BerainService {
 		}
 	}
 
-	public static BerainResult create(String id, String value) {
+	public static BerainResult<Boolean> create(String id, String value) {
 
 		try {
 			String path = id;
@@ -82,7 +82,7 @@ public class BerainService {
 
 	}
 
-	public static BerainResult delete(String id) {
+	public static BerainResult<Boolean> delete(String id) {
 
 		try {
 			List<RainModel> models = RainModel.find("path=?", id).fetch();
@@ -101,7 +101,7 @@ public class BerainService {
 		}
 	}
 
-	public static BerainResult copy(String originalId, String newid) {
+	public static BerainResult<Boolean> copy(String originalId, String newid) {
 
 		try {
 			List<RainModel> models = RainModel.find("path=?", originalId)
@@ -126,7 +126,8 @@ public class BerainService {
 	}
 
 	// --------------------------read-----------------------------//
-	public static BerainResult nextChildren(String parentId) {
+	public static BerainResult<List<Map<String, String>>> nextChildren(
+			String parentId) {
 		try {
 			List<RainModel> models = RainModel.find("path=?", parentId).fetch();
 			if (models != null && models.size() >= 1) {
@@ -156,7 +157,7 @@ public class BerainService {
 		}
 	}
 
-	public static BerainResult get(String id) {
+	public static BerainResult<String> get(String id) {
 		try {
 			List<RainModel> models = RainModel.find("path=?", id).fetch();
 			if (models != null && models.size() == 1) {
@@ -172,7 +173,7 @@ public class BerainService {
 
 	}
 
-	public static BerainResult getFull(String id) {
+	public static BerainResult<Map<String, String>> getFull(String id) {
 
 		try {
 			List<RainModel> models = RainModel.find("path=?", id).fetch();
@@ -193,7 +194,7 @@ public class BerainService {
 
 	}
 
-	public static BerainResult exists(String id) {
+	public static BerainResult<Boolean> exists(String id) {
 
 		try {
 			List<RainModel> models = RainModel.find("path=?", id).fetch();
@@ -209,10 +210,12 @@ public class BerainService {
 	}
 
 	// --------------------------Event-----------------------------//
-	public static BerainResult addWatchable(String clientId, String id, int type) {
+	public static BerainResult<Boolean> addWatchable(Integer clientId,
+			String id, int type) {
 
 		try {
-			container.addWatchableEvent(clientId, new WatchableEvent(type, id));
+			container.addWatchableEvent(clientId.toString(),
+					new WatchableEvent(type, id));
 			return new BerainResult(Success, true);
 
 		} catch (Throwable e) {
@@ -221,11 +224,11 @@ public class BerainService {
 		}
 	}
 
-	public static BerainResult removeWatchable(String clientId, String id,
-			int type) {
+	public static BerainResult<Boolean> removeWatchable(Integer clientId,
+			String id, int type) {
 		try {
-			container.removeWatchableEvent(clientId, new WatchableEvent(type,
-					id));
+			container.removeWatchableEvent(clientId.toString(),
+					new WatchableEvent(type, id));
 			return new BerainResult(Success, true);
 
 		} catch (Throwable e) {
@@ -235,8 +238,8 @@ public class BerainService {
 
 	}
 
-	public static BerainResult removeWatchedEvent(String clientId, String id,
-			int type) {
+	public static BerainResult<Boolean> removeWatchedEvent(String clientId,
+			String id, int type) {
 		try {
 			container.removeWatchedEvent(clientId, id, type);
 			return new BerainResult(Success, true);
@@ -248,11 +251,11 @@ public class BerainService {
 
 	}
 
-	public static BerainResult removeAllListener(String clientId) {
+	public static BerainResult<Boolean> removeAllListener(Integer clientId) {
 
 		try {
-			container.clearAllWatchableEvent(clientId);
-			container.clearAllWatchedEvent(clientId);
+			container.clearAllWatchableEvent(clientId.toString());
+			container.clearAllWatchedEvent(clientId.toString());
 			return new BerainResult(Success, true);
 
 		} catch (Throwable e) {
@@ -261,8 +264,8 @@ public class BerainService {
 		}
 	}
 
-	public static BerainResult listChangedNodes(String clientId,
-			List<String> paths, List<Integer> types) {
+	public static BerainResult<Map<String, Set<WatchedEvent>>> listChangedNodes(
+			String clientId, List<String> paths, List<Integer> types) {
 		Map<String, Set<WatchedEvent>> data = new HashMap<>();
 		try {
 			int psize = paths == null ? 0 : paths.size();

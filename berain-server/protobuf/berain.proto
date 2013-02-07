@@ -44,8 +44,9 @@ message WatchedEvent {
 }
 
 message WatchableRequest {
-	required string id = 1;
-	required EventType eventType = 2;
+	required int32 clientId = 1;
+	required string id = 2;
+	required EventType eventType = 3;
 }
 
 message BoolResponse {
@@ -59,9 +60,14 @@ message BerainEntry {
 	required string path = 4;
 }
 
-message BerainEntryResponse {
+message BerainEntrysResponse {
 	required StatusResult result = 1;
 	repeated BerainEntry entrys = 2;
+}
+
+message BerainEntryResponse {
+	required StatusResult result = 1;
+	optional BerainEntry entrys = 2;
 }
 
 message StringResponse {
@@ -79,7 +85,7 @@ service BerainService {
 	rpc copy (CopyRequest) returns (BoolResponse);
 
 	// --------------------------read-----------------------------//
-	rpc nextChildren (EntryRequest) returns (BerainEntryResponse);
+	rpc nextChildren (EntryRequest) returns (BerainEntrysResponse);
 	rpc get (EntryRequest) returns (StringResponse);
 	rpc getFull (EntryRequest) returns (BerainEntryResponse);
 	rpc exists (EntryRequest) returns (BoolResponse);
@@ -87,6 +93,6 @@ service BerainService {
 	// --------------------------Event-----------------------------//
 	rpc addWatchable (WatchableRequest) returns (BoolResponse);
 	rpc removeWatchable (WatchableRequest) returns (BoolResponse);
-	rpc removeAllListener (EntryRequest) returns (BoolResponse);
+	rpc removeAllListener (WatchableRequest) returns (BoolResponse);
 }
 

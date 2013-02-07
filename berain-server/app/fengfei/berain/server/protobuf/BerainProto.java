@@ -3284,11 +3284,15 @@ public final class BerainProto {
   public interface WatchableRequestOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
-    // required string id = 1;
+    // required int32 clientId = 1;
+    boolean hasClientId();
+    int getClientId();
+    
+    // required string id = 2;
     boolean hasId();
     String getId();
     
-    // required .EventType eventType = 2;
+    // required .EventType eventType = 3;
     boolean hasEventType();
     fengfei.berain.server.protobuf.BerainProto.EventType getEventType();
   }
@@ -3321,11 +3325,21 @@ public final class BerainProto {
     }
     
     private int bitField0_;
-    // required string id = 1;
-    public static final int ID_FIELD_NUMBER = 1;
+    // required int32 clientId = 1;
+    public static final int CLIENTID_FIELD_NUMBER = 1;
+    private int clientId_;
+    public boolean hasClientId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public int getClientId() {
+      return clientId_;
+    }
+    
+    // required string id = 2;
+    public static final int ID_FIELD_NUMBER = 2;
     private java.lang.Object id_;
     public boolean hasId() {
-      return ((bitField0_ & 0x00000001) == 0x00000001);
+      return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     public String getId() {
       java.lang.Object ref = id_;
@@ -3353,17 +3367,18 @@ public final class BerainProto {
       }
     }
     
-    // required .EventType eventType = 2;
-    public static final int EVENTTYPE_FIELD_NUMBER = 2;
+    // required .EventType eventType = 3;
+    public static final int EVENTTYPE_FIELD_NUMBER = 3;
     private fengfei.berain.server.protobuf.BerainProto.EventType eventType_;
     public boolean hasEventType() {
-      return ((bitField0_ & 0x00000002) == 0x00000002);
+      return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     public fengfei.berain.server.protobuf.BerainProto.EventType getEventType() {
       return eventType_;
     }
     
     private void initFields() {
+      clientId_ = 0;
       id_ = "";
       eventType_ = fengfei.berain.server.protobuf.BerainProto.EventType.None;
     }
@@ -3372,6 +3387,10 @@ public final class BerainProto {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
       
+      if (!hasClientId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       if (!hasId()) {
         memoizedIsInitialized = 0;
         return false;
@@ -3388,10 +3407,13 @@ public final class BerainProto {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBytes(1, getIdBytes());
+        output.writeInt32(1, clientId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeEnum(2, eventType_.getNumber());
+        output.writeBytes(2, getIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeEnum(3, eventType_.getNumber());
       }
       getUnknownFields().writeTo(output);
     }
@@ -3404,11 +3426,15 @@ public final class BerainProto {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(1, getIdBytes());
+          .computeInt32Size(1, clientId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeEnumSize(2, eventType_.getNumber());
+          .computeBytesSize(2, getIdBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(3, eventType_.getNumber());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -3534,10 +3560,12 @@ public final class BerainProto {
       
       public Builder clear() {
         super.clear();
-        id_ = "";
+        clientId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
-        eventType_ = fengfei.berain.server.protobuf.BerainProto.EventType.None;
+        id_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        eventType_ = fengfei.berain.server.protobuf.BerainProto.EventType.None;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
       
@@ -3579,9 +3607,13 @@ public final class BerainProto {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.id_ = id_;
+        result.clientId_ = clientId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
+        }
+        result.id_ = id_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
         }
         result.eventType_ = eventType_;
         result.bitField0_ = to_bitField0_;
@@ -3600,6 +3632,9 @@ public final class BerainProto {
       
       public Builder mergeFrom(fengfei.berain.server.protobuf.BerainProto.WatchableRequest other) {
         if (other == fengfei.berain.server.protobuf.BerainProto.WatchableRequest.getDefaultInstance()) return this;
+        if (other.hasClientId()) {
+          setClientId(other.getClientId());
+        }
         if (other.hasId()) {
           setId(other.getId());
         }
@@ -3611,6 +3646,10 @@ public final class BerainProto {
       }
       
       public final boolean isInitialized() {
+        if (!hasClientId()) {
+          
+          return false;
+        }
         if (!hasId()) {
           
           return false;
@@ -3645,18 +3684,23 @@ public final class BerainProto {
               }
               break;
             }
-            case 10: {
+            case 8: {
               bitField0_ |= 0x00000001;
+              clientId_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
               id_ = input.readBytes();
               break;
             }
-            case 16: {
+            case 24: {
               int rawValue = input.readEnum();
               fengfei.berain.server.protobuf.BerainProto.EventType value = fengfei.berain.server.protobuf.BerainProto.EventType.valueOf(rawValue);
               if (value == null) {
-                unknownFields.mergeVarintField(2, rawValue);
+                unknownFields.mergeVarintField(3, rawValue);
               } else {
-                bitField0_ |= 0x00000002;
+                bitField0_ |= 0x00000004;
                 eventType_ = value;
               }
               break;
@@ -3667,10 +3711,31 @@ public final class BerainProto {
       
       private int bitField0_;
       
-      // required string id = 1;
+      // required int32 clientId = 1;
+      private int clientId_ ;
+      public boolean hasClientId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public int getClientId() {
+        return clientId_;
+      }
+      public Builder setClientId(int value) {
+        bitField0_ |= 0x00000001;
+        clientId_ = value;
+        onChanged();
+        return this;
+      }
+      public Builder clearClientId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        clientId_ = 0;
+        onChanged();
+        return this;
+      }
+      
+      // required string id = 2;
       private java.lang.Object id_ = "";
       public boolean hasId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
+        return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       public String getId() {
         java.lang.Object ref = id_;
@@ -3686,27 +3751,27 @@ public final class BerainProto {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000001;
+  bitField0_ |= 0x00000002;
         id_ = value;
         onChanged();
         return this;
       }
       public Builder clearId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
+        bitField0_ = (bitField0_ & ~0x00000002);
         id_ = getDefaultInstance().getId();
         onChanged();
         return this;
       }
       void setId(com.google.protobuf.ByteString value) {
-        bitField0_ |= 0x00000001;
+        bitField0_ |= 0x00000002;
         id_ = value;
         onChanged();
       }
       
-      // required .EventType eventType = 2;
+      // required .EventType eventType = 3;
       private fengfei.berain.server.protobuf.BerainProto.EventType eventType_ = fengfei.berain.server.protobuf.BerainProto.EventType.None;
       public boolean hasEventType() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       public fengfei.berain.server.protobuf.BerainProto.EventType getEventType() {
         return eventType_;
@@ -3715,13 +3780,13 @@ public final class BerainProto {
         if (value == null) {
           throw new NullPointerException();
         }
-        bitField0_ |= 0x00000002;
+        bitField0_ |= 0x00000004;
         eventType_ = value;
         onChanged();
         return this;
       }
       public Builder clearEventType() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         eventType_ = fengfei.berain.server.protobuf.BerainProto.EventType.None;
         onChanged();
         return this;
@@ -4830,7 +4895,7 @@ public final class BerainProto {
     // @@protoc_insertion_point(class_scope:BerainEntry)
   }
   
-  public interface BerainEntryResponseOrBuilder
+  public interface BerainEntrysResponseOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
     
     // required .StatusResult result = 1;
@@ -4848,32 +4913,32 @@ public final class BerainProto {
     fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder getEntrysOrBuilder(
         int index);
   }
-  public static final class BerainEntryResponse extends
+  public static final class BerainEntrysResponse extends
       com.google.protobuf.GeneratedMessage
-      implements BerainEntryResponseOrBuilder {
-    // Use BerainEntryResponse.newBuilder() to construct.
-    private BerainEntryResponse(Builder builder) {
+      implements BerainEntrysResponseOrBuilder {
+    // Use BerainEntrysResponse.newBuilder() to construct.
+    private BerainEntrysResponse(Builder builder) {
       super(builder);
     }
-    private BerainEntryResponse(boolean noInit) {}
+    private BerainEntrysResponse(boolean noInit) {}
     
-    private static final BerainEntryResponse defaultInstance;
-    public static BerainEntryResponse getDefaultInstance() {
+    private static final BerainEntrysResponse defaultInstance;
+    public static BerainEntrysResponse getDefaultInstance() {
       return defaultInstance;
     }
     
-    public BerainEntryResponse getDefaultInstanceForType() {
+    public BerainEntrysResponse getDefaultInstanceForType() {
       return defaultInstance;
     }
     
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_descriptor;
+      return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntrysResponse_descriptor;
     }
     
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_fieldAccessorTable;
+      return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntrysResponse_fieldAccessorTable;
     }
     
     private int bitField0_;
@@ -4976,41 +5041,41 @@ public final class BerainProto {
       return super.writeReplace();
     }
     
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(byte[] data)
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data).buildParsed();
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return newBuilder().mergeFrom(data, extensionRegistry)
                .buildParsed();
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(java.io.InputStream input)
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input, extensionRegistry)
                .buildParsed();
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseDelimitedFrom(java.io.InputStream input)
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       Builder builder = newBuilder();
       if (builder.mergeDelimitedFrom(input)) {
@@ -5019,7 +5084,7 @@ public final class BerainProto {
         return null;
       }
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseDelimitedFrom(
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -5030,12 +5095,12 @@ public final class BerainProto {
         return null;
       }
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return newBuilder().mergeFrom(input).buildParsed();
     }
-    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -5045,7 +5110,7 @@ public final class BerainProto {
     
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse prototype) {
+    public static Builder newBuilder(fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -5058,18 +5123,18 @@ public final class BerainProto {
     }
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements fengfei.berain.server.protobuf.BerainProto.BerainEntryResponseOrBuilder {
+       implements fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponseOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_descriptor;
+        return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntrysResponse_descriptor;
       }
       
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_fieldAccessorTable;
+        return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntrysResponse_fieldAccessorTable;
       }
       
-      // Construct using fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.newBuilder()
+      // Construct using fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -5111,24 +5176,24 @@ public final class BerainProto {
       
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDescriptor();
+        return fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDescriptor();
       }
       
-      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse getDefaultInstanceForType() {
-        return fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance();
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse getDefaultInstanceForType() {
+        return fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDefaultInstance();
       }
       
-      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse build() {
-        fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse result = buildPartial();
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse build() {
+        fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
       
-      private fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse buildParsed()
+      private fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse buildParsed()
           throws com.google.protobuf.InvalidProtocolBufferException {
-        fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse result = buildPartial();
+        fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(
             result).asInvalidProtocolBufferException();
@@ -5136,8 +5201,8 @@ public final class BerainProto {
         return result;
       }
       
-      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse buildPartial() {
-        fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse result = new fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse(this);
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse buildPartial() {
+        fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse result = new fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -5163,16 +5228,16 @@ public final class BerainProto {
       }
       
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse) {
-          return mergeFrom((fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse)other);
+        if (other instanceof fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse) {
+          return mergeFrom((fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
       
-      public Builder mergeFrom(fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse other) {
-        if (other == fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance()) return this;
+      public Builder mergeFrom(fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse other) {
+        if (other == fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDefaultInstance()) return this;
         if (other.hasResult()) {
           mergeResult(other.getResult());
         }
@@ -5537,6 +5602,601 @@ public final class BerainProto {
               fengfei.berain.server.protobuf.BerainProto.BerainEntry, fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder, fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder>(
                   entrys_,
                   ((bitField0_ & 0x00000002) == 0x00000002),
+                  getParentForChildren(),
+                  isClean());
+          entrys_ = null;
+        }
+        return entrysBuilder_;
+      }
+      
+      // @@protoc_insertion_point(builder_scope:BerainEntrysResponse)
+    }
+    
+    static {
+      defaultInstance = new BerainEntrysResponse(true);
+      defaultInstance.initFields();
+    }
+    
+    // @@protoc_insertion_point(class_scope:BerainEntrysResponse)
+  }
+  
+  public interface BerainEntryResponseOrBuilder
+      extends com.google.protobuf.MessageOrBuilder {
+    
+    // required .StatusResult result = 1;
+    boolean hasResult();
+    fengfei.berain.server.protobuf.BerainProto.StatusResult getResult();
+    fengfei.berain.server.protobuf.BerainProto.StatusResultOrBuilder getResultOrBuilder();
+    
+    // optional .BerainEntry entrys = 2;
+    boolean hasEntrys();
+    fengfei.berain.server.protobuf.BerainProto.BerainEntry getEntrys();
+    fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder getEntrysOrBuilder();
+  }
+  public static final class BerainEntryResponse extends
+      com.google.protobuf.GeneratedMessage
+      implements BerainEntryResponseOrBuilder {
+    // Use BerainEntryResponse.newBuilder() to construct.
+    private BerainEntryResponse(Builder builder) {
+      super(builder);
+    }
+    private BerainEntryResponse(boolean noInit) {}
+    
+    private static final BerainEntryResponse defaultInstance;
+    public static BerainEntryResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+    
+    public BerainEntryResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+    
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_descriptor;
+    }
+    
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_fieldAccessorTable;
+    }
+    
+    private int bitField0_;
+    // required .StatusResult result = 1;
+    public static final int RESULT_FIELD_NUMBER = 1;
+    private fengfei.berain.server.protobuf.BerainProto.StatusResult result_;
+    public boolean hasResult() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    public fengfei.berain.server.protobuf.BerainProto.StatusResult getResult() {
+      return result_;
+    }
+    public fengfei.berain.server.protobuf.BerainProto.StatusResultOrBuilder getResultOrBuilder() {
+      return result_;
+    }
+    
+    // optional .BerainEntry entrys = 2;
+    public static final int ENTRYS_FIELD_NUMBER = 2;
+    private fengfei.berain.server.protobuf.BerainProto.BerainEntry entrys_;
+    public boolean hasEntrys() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    public fengfei.berain.server.protobuf.BerainProto.BerainEntry getEntrys() {
+      return entrys_;
+    }
+    public fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder getEntrysOrBuilder() {
+      return entrys_;
+    }
+    
+    private void initFields() {
+      result_ = fengfei.berain.server.protobuf.BerainProto.StatusResult.getDefaultInstance();
+      entrys_ = fengfei.berain.server.protobuf.BerainProto.BerainEntry.getDefaultInstance();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+      
+      if (!hasResult()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!getResult().isInitialized()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (hasEntrys()) {
+        if (!getEntrys().isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+    
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeMessage(1, result_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeMessage(2, entrys_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+    
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+    
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, result_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(2, entrys_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+    
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+    
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data).buildParsed();
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return newBuilder().mergeFrom(data, extensionRegistry)
+               .buildParsed();
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      Builder builder = newBuilder();
+      if (builder.mergeDelimitedFrom(input, extensionRegistry)) {
+        return builder.buildParsed();
+      } else {
+        return null;
+      }
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input).buildParsed();
+    }
+    public static fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return newBuilder().mergeFrom(input, extensionRegistry)
+               .buildParsed();
+    }
+    
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+    
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder>
+       implements fengfei.berain.server.protobuf.BerainProto.BerainEntryResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_descriptor;
+      }
+      
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return fengfei.berain.server.protobuf.BerainProto.internal_static_BerainEntryResponse_fieldAccessorTable;
+      }
+      
+      // Construct using fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+      
+      private Builder(BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getResultFieldBuilder();
+          getEntrysFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+      
+      public Builder clear() {
+        super.clear();
+        if (resultBuilder_ == null) {
+          result_ = fengfei.berain.server.protobuf.BerainProto.StatusResult.getDefaultInstance();
+        } else {
+          resultBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        if (entrysBuilder_ == null) {
+          entrys_ = fengfei.berain.server.protobuf.BerainProto.BerainEntry.getDefaultInstance();
+        } else {
+          entrysBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+      
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDescriptor();
+      }
+      
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse getDefaultInstanceForType() {
+        return fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance();
+      }
+      
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse build() {
+        fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+      
+      private fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse buildParsed()
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(
+            result).asInvalidProtocolBufferException();
+        }
+        return result;
+      }
+      
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse buildPartial() {
+        fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse result = new fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        if (resultBuilder_ == null) {
+          result.result_ = result_;
+        } else {
+          result.result_ = resultBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        if (entrysBuilder_ == null) {
+          result.entrys_ = entrys_;
+        } else {
+          result.entrys_ = entrysBuilder_.build();
+        }
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+      
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse) {
+          return mergeFrom((fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+      
+      public Builder mergeFrom(fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse other) {
+        if (other == fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance()) return this;
+        if (other.hasResult()) {
+          mergeResult(other.getResult());
+        }
+        if (other.hasEntrys()) {
+          mergeEntrys(other.getEntrys());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+      
+      public final boolean isInitialized() {
+        if (!hasResult()) {
+          
+          return false;
+        }
+        if (!getResult().isInitialized()) {
+          
+          return false;
+        }
+        if (hasEntrys()) {
+          if (!getEntrys().isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+      
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder(
+            this.getUnknownFields());
+        while (true) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              this.setUnknownFields(unknownFields.build());
+              onChanged();
+              return this;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                this.setUnknownFields(unknownFields.build());
+                onChanged();
+                return this;
+              }
+              break;
+            }
+            case 10: {
+              fengfei.berain.server.protobuf.BerainProto.StatusResult.Builder subBuilder = fengfei.berain.server.protobuf.BerainProto.StatusResult.newBuilder();
+              if (hasResult()) {
+                subBuilder.mergeFrom(getResult());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setResult(subBuilder.buildPartial());
+              break;
+            }
+            case 18: {
+              fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder subBuilder = fengfei.berain.server.protobuf.BerainProto.BerainEntry.newBuilder();
+              if (hasEntrys()) {
+                subBuilder.mergeFrom(getEntrys());
+              }
+              input.readMessage(subBuilder, extensionRegistry);
+              setEntrys(subBuilder.buildPartial());
+              break;
+            }
+          }
+        }
+      }
+      
+      private int bitField0_;
+      
+      // required .StatusResult result = 1;
+      private fengfei.berain.server.protobuf.BerainProto.StatusResult result_ = fengfei.berain.server.protobuf.BerainProto.StatusResult.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          fengfei.berain.server.protobuf.BerainProto.StatusResult, fengfei.berain.server.protobuf.BerainProto.StatusResult.Builder, fengfei.berain.server.protobuf.BerainProto.StatusResultOrBuilder> resultBuilder_;
+      public boolean hasResult() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      public fengfei.berain.server.protobuf.BerainProto.StatusResult getResult() {
+        if (resultBuilder_ == null) {
+          return result_;
+        } else {
+          return resultBuilder_.getMessage();
+        }
+      }
+      public Builder setResult(fengfei.berain.server.protobuf.BerainProto.StatusResult value) {
+        if (resultBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          result_ = value;
+          onChanged();
+        } else {
+          resultBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder setResult(
+          fengfei.berain.server.protobuf.BerainProto.StatusResult.Builder builderForValue) {
+        if (resultBuilder_ == null) {
+          result_ = builderForValue.build();
+          onChanged();
+        } else {
+          resultBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder mergeResult(fengfei.berain.server.protobuf.BerainProto.StatusResult value) {
+        if (resultBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001) &&
+              result_ != fengfei.berain.server.protobuf.BerainProto.StatusResult.getDefaultInstance()) {
+            result_ =
+              fengfei.berain.server.protobuf.BerainProto.StatusResult.newBuilder(result_).mergeFrom(value).buildPartial();
+          } else {
+            result_ = value;
+          }
+          onChanged();
+        } else {
+          resultBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000001;
+        return this;
+      }
+      public Builder clearResult() {
+        if (resultBuilder_ == null) {
+          result_ = fengfei.berain.server.protobuf.BerainProto.StatusResult.getDefaultInstance();
+          onChanged();
+        } else {
+          resultBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+      public fengfei.berain.server.protobuf.BerainProto.StatusResult.Builder getResultBuilder() {
+        bitField0_ |= 0x00000001;
+        onChanged();
+        return getResultFieldBuilder().getBuilder();
+      }
+      public fengfei.berain.server.protobuf.BerainProto.StatusResultOrBuilder getResultOrBuilder() {
+        if (resultBuilder_ != null) {
+          return resultBuilder_.getMessageOrBuilder();
+        } else {
+          return result_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          fengfei.berain.server.protobuf.BerainProto.StatusResult, fengfei.berain.server.protobuf.BerainProto.StatusResult.Builder, fengfei.berain.server.protobuf.BerainProto.StatusResultOrBuilder> 
+          getResultFieldBuilder() {
+        if (resultBuilder_ == null) {
+          resultBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              fengfei.berain.server.protobuf.BerainProto.StatusResult, fengfei.berain.server.protobuf.BerainProto.StatusResult.Builder, fengfei.berain.server.protobuf.BerainProto.StatusResultOrBuilder>(
+                  result_,
+                  getParentForChildren(),
+                  isClean());
+          result_ = null;
+        }
+        return resultBuilder_;
+      }
+      
+      // optional .BerainEntry entrys = 2;
+      private fengfei.berain.server.protobuf.BerainProto.BerainEntry entrys_ = fengfei.berain.server.protobuf.BerainProto.BerainEntry.getDefaultInstance();
+      private com.google.protobuf.SingleFieldBuilder<
+          fengfei.berain.server.protobuf.BerainProto.BerainEntry, fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder, fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder> entrysBuilder_;
+      public boolean hasEntrys() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntry getEntrys() {
+        if (entrysBuilder_ == null) {
+          return entrys_;
+        } else {
+          return entrysBuilder_.getMessage();
+        }
+      }
+      public Builder setEntrys(fengfei.berain.server.protobuf.BerainProto.BerainEntry value) {
+        if (entrysBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          entrys_ = value;
+          onChanged();
+        } else {
+          entrysBuilder_.setMessage(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      public Builder setEntrys(
+          fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder builderForValue) {
+        if (entrysBuilder_ == null) {
+          entrys_ = builderForValue.build();
+          onChanged();
+        } else {
+          entrysBuilder_.setMessage(builderForValue.build());
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      public Builder mergeEntrys(fengfei.berain.server.protobuf.BerainProto.BerainEntry value) {
+        if (entrysBuilder_ == null) {
+          if (((bitField0_ & 0x00000002) == 0x00000002) &&
+              entrys_ != fengfei.berain.server.protobuf.BerainProto.BerainEntry.getDefaultInstance()) {
+            entrys_ =
+              fengfei.berain.server.protobuf.BerainProto.BerainEntry.newBuilder(entrys_).mergeFrom(value).buildPartial();
+          } else {
+            entrys_ = value;
+          }
+          onChanged();
+        } else {
+          entrysBuilder_.mergeFrom(value);
+        }
+        bitField0_ |= 0x00000002;
+        return this;
+      }
+      public Builder clearEntrys() {
+        if (entrysBuilder_ == null) {
+          entrys_ = fengfei.berain.server.protobuf.BerainProto.BerainEntry.getDefaultInstance();
+          onChanged();
+        } else {
+          entrysBuilder_.clear();
+        }
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder getEntrysBuilder() {
+        bitField0_ |= 0x00000002;
+        onChanged();
+        return getEntrysFieldBuilder().getBuilder();
+      }
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder getEntrysOrBuilder() {
+        if (entrysBuilder_ != null) {
+          return entrysBuilder_.getMessageOrBuilder();
+        } else {
+          return entrys_;
+        }
+      }
+      private com.google.protobuf.SingleFieldBuilder<
+          fengfei.berain.server.protobuf.BerainProto.BerainEntry, fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder, fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder> 
+          getEntrysFieldBuilder() {
+        if (entrysBuilder_ == null) {
+          entrysBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+              fengfei.berain.server.protobuf.BerainProto.BerainEntry, fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder, fengfei.berain.server.protobuf.BerainProto.BerainEntryOrBuilder>(
+                  entrys_,
                   getParentForChildren(),
                   isClean());
           entrys_ = null;
@@ -6130,7 +6790,7 @@ public final class BerainProto {
       public abstract void nextChildren(
           com.google.protobuf.RpcController controller,
           fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
-          com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse> done);
+          com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse> done);
       
       public abstract void get(
           com.google.protobuf.RpcController controller,
@@ -6159,7 +6819,7 @@ public final class BerainProto {
       
       public abstract void removeAllListener(
           com.google.protobuf.RpcController controller,
-          fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
+          fengfei.berain.server.protobuf.BerainProto.WatchableRequest request,
           com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BoolResponse> done);
       
     }
@@ -6211,7 +6871,7 @@ public final class BerainProto {
         public  void nextChildren(
             com.google.protobuf.RpcController controller,
             fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
-            com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse> done) {
+            com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse> done) {
           impl.nextChildren(controller, request, done);
         }
         
@@ -6258,7 +6918,7 @@ public final class BerainProto {
         @java.lang.Override
         public  void removeAllListener(
             com.google.protobuf.RpcController controller,
-            fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
+            fengfei.berain.server.protobuf.BerainProto.WatchableRequest request,
             com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BoolResponse> done) {
           impl.removeAllListener(controller, request, done);
         }
@@ -6308,7 +6968,7 @@ public final class BerainProto {
             case 10:
               return impl.removeWatchable(controller, (fengfei.berain.server.protobuf.BerainProto.WatchableRequest)request);
             case 11:
-              return impl.removeAllListener(controller, (fengfei.berain.server.protobuf.BerainProto.EntryRequest)request);
+              return impl.removeAllListener(controller, (fengfei.berain.server.protobuf.BerainProto.WatchableRequest)request);
             default:
               throw new java.lang.AssertionError("Can't get here.");
           }
@@ -6346,7 +7006,7 @@ public final class BerainProto {
             case 10:
               return fengfei.berain.server.protobuf.BerainProto.WatchableRequest.getDefaultInstance();
             case 11:
-              return fengfei.berain.server.protobuf.BerainProto.EntryRequest.getDefaultInstance();
+              return fengfei.berain.server.protobuf.BerainProto.WatchableRequest.getDefaultInstance();
             default:
               throw new java.lang.AssertionError("Can't get here.");
           }
@@ -6372,7 +7032,7 @@ public final class BerainProto {
             case 4:
               return fengfei.berain.server.protobuf.BerainProto.BoolResponse.getDefaultInstance();
             case 5:
-              return fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance();
+              return fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDefaultInstance();
             case 6:
               return fengfei.berain.server.protobuf.BerainProto.StringResponse.getDefaultInstance();
             case 7:
@@ -6421,7 +7081,7 @@ public final class BerainProto {
     public abstract void nextChildren(
         com.google.protobuf.RpcController controller,
         fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
-        com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse> done);
+        com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse> done);
     
     public abstract void get(
         com.google.protobuf.RpcController controller,
@@ -6450,7 +7110,7 @@ public final class BerainProto {
     
     public abstract void removeAllListener(
         com.google.protobuf.RpcController controller,
-        fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
+        fengfei.berain.server.protobuf.BerainProto.WatchableRequest request,
         com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BoolResponse> done);
     
     public static final
@@ -6502,7 +7162,7 @@ public final class BerainProto {
           return;
         case 5:
           this.nextChildren(controller, (fengfei.berain.server.protobuf.BerainProto.EntryRequest)request,
-            com.google.protobuf.RpcUtil.<fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse>specializeCallback(
+            com.google.protobuf.RpcUtil.<fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse>specializeCallback(
               done));
           return;
         case 6:
@@ -6531,7 +7191,7 @@ public final class BerainProto {
               done));
           return;
         case 11:
-          this.removeAllListener(controller, (fengfei.berain.server.protobuf.BerainProto.EntryRequest)request,
+          this.removeAllListener(controller, (fengfei.berain.server.protobuf.BerainProto.WatchableRequest)request,
             com.google.protobuf.RpcUtil.<fengfei.berain.server.protobuf.BerainProto.BoolResponse>specializeCallback(
               done));
           return;
@@ -6572,7 +7232,7 @@ public final class BerainProto {
         case 10:
           return fengfei.berain.server.protobuf.BerainProto.WatchableRequest.getDefaultInstance();
         case 11:
-          return fengfei.berain.server.protobuf.BerainProto.EntryRequest.getDefaultInstance();
+          return fengfei.berain.server.protobuf.BerainProto.WatchableRequest.getDefaultInstance();
         default:
           throw new java.lang.AssertionError("Can't get here.");
       }
@@ -6598,7 +7258,7 @@ public final class BerainProto {
         case 4:
           return fengfei.berain.server.protobuf.BerainProto.BoolResponse.getDefaultInstance();
         case 5:
-          return fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance();
+          return fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDefaultInstance();
         case 6:
           return fengfei.berain.server.protobuf.BerainProto.StringResponse.getDefaultInstance();
         case 7:
@@ -6710,16 +7370,16 @@ public final class BerainProto {
       public  void nextChildren(
           com.google.protobuf.RpcController controller,
           fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
-          com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse> done) {
+          com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse> done) {
         channel.callMethod(
           getDescriptor().getMethods().get(5),
           controller,
           request,
-          fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance(),
+          fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDefaultInstance(),
           com.google.protobuf.RpcUtil.generalizeCallback(
             done,
-            fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.class,
-            fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance()));
+            fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.class,
+            fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDefaultInstance()));
       }
       
       public  void get(
@@ -6799,7 +7459,7 @@ public final class BerainProto {
       
       public  void removeAllListener(
           com.google.protobuf.RpcController controller,
-          fengfei.berain.server.protobuf.BerainProto.EntryRequest request,
+          fengfei.berain.server.protobuf.BerainProto.WatchableRequest request,
           com.google.protobuf.RpcCallback<fengfei.berain.server.protobuf.BerainProto.BoolResponse> done) {
         channel.callMethod(
           getDescriptor().getMethods().get(11),
@@ -6844,7 +7504,7 @@ public final class BerainProto {
           fengfei.berain.server.protobuf.BerainProto.CopyRequest request)
           throws com.google.protobuf.ServiceException;
       
-      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse nextChildren(
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse nextChildren(
           com.google.protobuf.RpcController controller,
           fengfei.berain.server.protobuf.BerainProto.EntryRequest request)
           throws com.google.protobuf.ServiceException;
@@ -6876,7 +7536,7 @@ public final class BerainProto {
       
       public fengfei.berain.server.protobuf.BerainProto.BoolResponse removeAllListener(
           com.google.protobuf.RpcController controller,
-          fengfei.berain.server.protobuf.BerainProto.EntryRequest request)
+          fengfei.berain.server.protobuf.BerainProto.WatchableRequest request)
           throws com.google.protobuf.ServiceException;
     }
     
@@ -6947,15 +7607,15 @@ public final class BerainProto {
       }
       
       
-      public fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse nextChildren(
+      public fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse nextChildren(
           com.google.protobuf.RpcController controller,
           fengfei.berain.server.protobuf.BerainProto.EntryRequest request)
           throws com.google.protobuf.ServiceException {
-        return (fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse) channel.callBlockingMethod(
+        return (fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse) channel.callBlockingMethod(
           getDescriptor().getMethods().get(5),
           controller,
           request,
-          fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.getDefaultInstance());
+          fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.getDefaultInstance());
       }
       
       
@@ -7021,7 +7681,7 @@ public final class BerainProto {
       
       public fengfei.berain.server.protobuf.BerainProto.BoolResponse removeAllListener(
           com.google.protobuf.RpcController controller,
-          fengfei.berain.server.protobuf.BerainProto.EntryRequest request)
+          fengfei.berain.server.protobuf.BerainProto.WatchableRequest request)
           throws com.google.protobuf.ServiceException {
         return (fengfei.berain.server.protobuf.BerainProto.BoolResponse) channel.callBlockingMethod(
           getDescriptor().getMethods().get(11),
@@ -7084,6 +7744,11 @@ public final class BerainProto {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_BerainEntry_fieldAccessorTable;
   private static com.google.protobuf.Descriptors.Descriptor
+    internal_static_BerainEntrysResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_BerainEntrysResponse_fieldAccessorTable;
+  private static com.google.protobuf.Descriptors.Descriptor
     internal_static_BerainEntryResponse_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -7110,33 +7775,36 @@ public final class BerainProto {
       "\005\"*\n\014EntryRequest\022\013\n\003key\030\001 \002(\t\022\r\n\005value\030" +
       "\002 \001(\t\"0\n\013CopyRequest\022\022\n\noriginalId\030\001 \002(\t" +
       "\022\r\n\005newid\030\002 \001(\t\";\n\014WatchedEvent\022\035\n\tevent" +
-      "Type\030\001 \002(\0162\n.EventType\022\014\n\004path\030\002 \002(\t\"=\n\020" +
-      "WatchableRequest\022\n\n\002id\030\001 \002(\t\022\035\n\teventTyp",
-      "e\030\002 \002(\0162\n.EventType\"@\n\014BoolResponse\022\035\n\006r" +
-      "esult\030\001 \002(\0132\r.StatusResult\022\021\n\tsuccessed\030" +
-      "\002 \002(\010\"7\n\013BerainEntry\022\013\n\003key\030\002 \002(\t\022\r\n\005val" +
-      "ue\030\003 \002(\t\022\014\n\004path\030\004 \002(\t\"R\n\023BerainEntryRes" +
-      "ponse\022\035\n\006result\030\001 \002(\0132\r.StatusResult\022\034\n\006" +
-      "entrys\030\002 \003(\0132\014.BerainEntry\">\n\016StringResp" +
-      "onse\022\035\n\006result\030\001 \002(\0132\r.StatusResult\022\r\n\005v" +
-      "alue\030\002 \002(\t*^\n\tEventType\022\021\n\004None\020\377\377\377\377\377\377\377\377" +
-      "\377\001\022\013\n\007Created\020\001\022\013\n\007Deleted\020\002\022\017\n\013DataChan" +
-      "ged\020\003\022\023\n\017ChildrenChanged\020\0042\242\004\n\rBerainSer",
-      "vice\022&\n\005login\022\r.LoginRequest\032\016.LoginResp" +
-      "onse\022&\n\006update\022\r.EntryRequest\032\r.BoolResp" +
-      "onse\022&\n\006create\022\r.EntryRequest\032\r.BoolResp" +
-      "onse\022&\n\006delete\022\r.EntryRequest\032\r.BoolResp" +
-      "onse\022#\n\004copy\022\014.CopyRequest\032\r.BoolRespons" +
-      "e\0223\n\014nextChildren\022\r.EntryRequest\032\024.Berai" +
-      "nEntryResponse\022%\n\003get\022\r.EntryRequest\032\017.S" +
-      "tringResponse\022.\n\007getFull\022\r.EntryRequest\032" +
-      "\024.BerainEntryResponse\022&\n\006exists\022\r.EntryR" +
-      "equest\032\r.BoolResponse\0220\n\014addWatchable\022\021.",
-      "WatchableRequest\032\r.BoolResponse\0223\n\017remov" +
-      "eWatchable\022\021.WatchableRequest\032\r.BoolResp" +
-      "onse\0221\n\021removeAllListener\022\r.EntryRequest" +
-      "\032\r.BoolResponseB0\n\036fengfei.berain.server" +
-      ".protobufB\013BerainProto\210\001\001"
+      "Type\030\001 \002(\0162\n.EventType\022\014\n\004path\030\002 \002(\t\"O\n\020" +
+      "WatchableRequest\022\020\n\010clientId\030\001 \002(\005\022\n\n\002id",
+      "\030\002 \002(\t\022\035\n\teventType\030\003 \002(\0162\n.EventType\"@\n" +
+      "\014BoolResponse\022\035\n\006result\030\001 \002(\0132\r.StatusRe" +
+      "sult\022\021\n\tsuccessed\030\002 \002(\010\"7\n\013BerainEntry\022\013" +
+      "\n\003key\030\002 \002(\t\022\r\n\005value\030\003 \002(\t\022\014\n\004path\030\004 \002(\t" +
+      "\"S\n\024BerainEntrysResponse\022\035\n\006result\030\001 \002(\013" +
+      "2\r.StatusResult\022\034\n\006entrys\030\002 \003(\0132\014.Berain" +
+      "Entry\"R\n\023BerainEntryResponse\022\035\n\006result\030\001" +
+      " \002(\0132\r.StatusResult\022\034\n\006entrys\030\002 \001(\0132\014.Be" +
+      "rainEntry\">\n\016StringResponse\022\035\n\006result\030\001 " +
+      "\002(\0132\r.StatusResult\022\r\n\005value\030\002 \002(\t*^\n\tEve",
+      "ntType\022\021\n\004None\020\377\377\377\377\377\377\377\377\377\001\022\013\n\007Created\020\001\022\013" +
+      "\n\007Deleted\020\002\022\017\n\013DataChanged\020\003\022\023\n\017Children" +
+      "Changed\020\0042\247\004\n\rBerainService\022&\n\005login\022\r.L" +
+      "oginRequest\032\016.LoginResponse\022&\n\006update\022\r." +
+      "EntryRequest\032\r.BoolResponse\022&\n\006create\022\r." +
+      "EntryRequest\032\r.BoolResponse\022&\n\006delete\022\r." +
+      "EntryRequest\032\r.BoolResponse\022#\n\004copy\022\014.Co" +
+      "pyRequest\032\r.BoolResponse\0224\n\014nextChildren" +
+      "\022\r.EntryRequest\032\025.BerainEntrysResponse\022%" +
+      "\n\003get\022\r.EntryRequest\032\017.StringResponse\022.\n",
+      "\007getFull\022\r.EntryRequest\032\024.BerainEntryRes" +
+      "ponse\022&\n\006exists\022\r.EntryRequest\032\r.BoolRes" +
+      "ponse\0220\n\014addWatchable\022\021.WatchableRequest" +
+      "\032\r.BoolResponse\0223\n\017removeWatchable\022\021.Wat" +
+      "chableRequest\032\r.BoolResponse\0225\n\021removeAl" +
+      "lListener\022\021.WatchableRequest\032\r.BoolRespo" +
+      "nseB0\n\036fengfei.berain.server.protobufB\013B" +
+      "erainProto\210\001\001"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -7204,7 +7872,7 @@ public final class BerainProto {
           internal_static_WatchableRequest_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_WatchableRequest_descriptor,
-              new java.lang.String[] { "Id", "EventType", },
+              new java.lang.String[] { "ClientId", "Id", "EventType", },
               fengfei.berain.server.protobuf.BerainProto.WatchableRequest.class,
               fengfei.berain.server.protobuf.BerainProto.WatchableRequest.Builder.class);
           internal_static_BoolResponse_descriptor =
@@ -7223,8 +7891,16 @@ public final class BerainProto {
               new java.lang.String[] { "Key", "Value", "Path", },
               fengfei.berain.server.protobuf.BerainProto.BerainEntry.class,
               fengfei.berain.server.protobuf.BerainProto.BerainEntry.Builder.class);
-          internal_static_BerainEntryResponse_descriptor =
+          internal_static_BerainEntrysResponse_descriptor =
             getDescriptor().getMessageTypes().get(10);
+          internal_static_BerainEntrysResponse_fieldAccessorTable = new
+            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+              internal_static_BerainEntrysResponse_descriptor,
+              new java.lang.String[] { "Result", "Entrys", },
+              fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.class,
+              fengfei.berain.server.protobuf.BerainProto.BerainEntrysResponse.Builder.class);
+          internal_static_BerainEntryResponse_descriptor =
+            getDescriptor().getMessageTypes().get(11);
           internal_static_BerainEntryResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_BerainEntryResponse_descriptor,
@@ -7232,7 +7908,7 @@ public final class BerainProto {
               fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.class,
               fengfei.berain.server.protobuf.BerainProto.BerainEntryResponse.Builder.class);
           internal_static_StringResponse_descriptor =
-            getDescriptor().getMessageTypes().get(11);
+            getDescriptor().getMessageTypes().get(12);
           internal_static_StringResponse_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_StringResponse_descriptor,
