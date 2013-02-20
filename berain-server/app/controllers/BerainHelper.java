@@ -16,7 +16,7 @@ import models.RainModel;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-import fengfei.berain.server.HttpClientContainer;
+import fengfei.berain.server.ClientContainer;
 import fengfei.berain.server.Focus;
 import fengfei.berain.server.WatchableEvent;
 import fengfei.berain.server.WatchedEvent;
@@ -25,7 +25,7 @@ public class BerainHelper {
 
 	public static final String ROOT_PATH = "/";
 	public static final String SEPARATOR = "/";
-	private static HttpClientContainer container = HttpClientContainer.get();
+	private static  ClientContainer container =  ClientContainer.get();
 
 	// --------------------------write-----------------------------//
 	public static BerainResult<Boolean> update(String id, String value) {
@@ -263,34 +263,7 @@ public class BerainHelper {
 			return new BerainResult(ServerError, false);
 		}
 	}
-
-	public static BerainResult<Map<String, Set<WatchedEvent>>> listChangedNodes(
-			String clientId, List<String> paths, List<Integer> types) {
-		Map<String, Set<WatchedEvent>> data = new HashMap<>();
-		try {
-			int psize = paths == null ? 0 : paths.size();
-			int tsize = types == null ? 0 : types.size();
-			int size = psize;
-			if (psize > tsize) {
-				size = tsize;
-			}
-			for (int i = 0; i < size; i++) {
-				String path = paths.get(i);
-				int eventType = types.get(i);
-				WatchableEvent event = container.varifyWatchableEvent(clientId,
-						path, eventType);
-			}
-
-			Map<String, Set<WatchedEvent>> edata = container
-					.getAllWatchedEvents(clientId);
-			if (edata != null)
-				data.putAll(edata);
-			return new BerainResult(Success, data);
-		} catch (Throwable e) {
-			e.printStackTrace();
-			return new BerainResult(ServerError, null);
-		}
-	}
+ 
 
 	public static BerainResult dump(String clientId) {
 		if (clientId == null || "".equals(clientId)) {

@@ -1,18 +1,16 @@
 option java_package = "fengfei.berain.server.protobuf";
 option java_outer_classname = "BerainProto";
 option java_generic_services = true;
+
 message StatusResult {
 	required int32 code = 1;
 	required string message = 2;
 }
 
-message CalcResponse {
-	required int32 result = 1;
-}
-
 message LoginRequest {
-	required string user = 1;
-	required string password = 2;
+	required int32 ct = 1;
+	required string user = 2;
+	required string password = 3;
 }
 
 message LoginResponse {
@@ -21,13 +19,15 @@ message LoginResponse {
 }
 
 message EntryRequest {
-	required string key = 1;
-	optional string value = 2;
+	required int32 ct = 1;
+	required string key = 2;
+	optional string value = 3;
 }
 
 message CopyRequest {
-	required string originalId = 1;
-	optional string newid = 2;
+	required int32 ct = 1;
+	required string originalId = 2;
+	optional string newid = 3;
 }
 
 enum EventType {
@@ -44,9 +44,16 @@ message WatchedEvent {
 }
 
 message WatchableRequest {
-	required int32 clientId = 1;
-	required string id = 2;
-	required EventType eventType = 3;
+	required int32 ct = 1;
+	required int32 clientId = 2;
+	required string id = 3;
+	required EventType eventType = 4;
+}
+
+message WatchedResponse {
+	required StatusResult result = 1;
+
+	repeated WatchedEvent watchedEvents = 2;
 }
 
 message BoolResponse {
