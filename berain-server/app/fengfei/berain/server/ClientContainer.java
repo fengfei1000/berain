@@ -27,7 +27,6 @@ public class ClientContainer {
 	private final Lock lock = new ReentrantLock();
 	private final WatchingEventContainer eventContainer = new WatchingEventContainer();
 
-	private Map<String, Integer> watchableClients = new HashMap<>();// //key=path,value=clientId
 	private Map<String, WatchedContainer> watcheds = new HashMap<>();
 	private Map<String, Long> lastUpdated = new HashMap<>();
 

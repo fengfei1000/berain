@@ -25,7 +25,7 @@ public class BerainHelper {
 
 	public static final String ROOT_PATH = "/";
 	public static final String SEPARATOR = "/";
-	private static  ClientContainer container =  ClientContainer.get();
+	private static ClientContainer container = ClientContainer.get();
 
 	// --------------------------write-----------------------------//
 	public static BerainResult<Boolean> update(String id, String value) {
@@ -50,6 +50,7 @@ public class BerainHelper {
 
 		try {
 			String path = id;
+			System.out.println(id + "  " + value);
 			String parentPath = Focus.getParent(path);
 			List<RainModel> models = RainModel.find("path=?", parentPath)
 					.fetch();
@@ -263,7 +264,6 @@ public class BerainHelper {
 			return new BerainResult(ServerError, false);
 		}
 	}
- 
 
 	public static BerainResult dump(String clientId) {
 		if (clientId == null || "".equals(clientId)) {

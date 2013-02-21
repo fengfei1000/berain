@@ -1,0 +1,10 @@
+21 二月 2013 17:14:40,165 INFO  ~ Starting E:\me\USB\pp\github\berain\berain-server
+21 二月 2013 17:14:40,169 WARN  ~ Declaring modules in application.conf is deprecated. Use dependencies.yml instead (module.japid)
+21 二月 2013 17:14:40,170 INFO  ~ Module japid is available (E:\tech\web_research\play\play-1.2.5\modules\japid-0.9.5)
+21 二月 2013 17:14:46,178 INFO  ~ JapidPlugin.onload().
+21 二月 2013 17:14:46,178 INFO  ~ [Japid] play in DEV mode. Detecting changes...
+21 二月 2013 17:14:47,854 INFO  ~ Berain Server started for port 18023.
+21 二月 2013 17:14:47,858 INFO  ~ Serving on: 0.0.0.0/0.0.0.0:18023
+21 二月 2013 17:14:47,908 WARN  ~ You're running Play! in DEV mode
+21 二月 2013 17:14:47,912 INFO  ~ Listening for HTTP on port 8021 (Waiting a first request to start) ...
+21 二月 2013 17:14:54,835 INFO  ~ Received request for serviceName: BerainService, method: create

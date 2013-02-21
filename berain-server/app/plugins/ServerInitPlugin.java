@@ -1,7 +1,6 @@
 package plugins;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -9,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import play.Play;
 import play.PlayPlugin;
-import play.db.jpa.JPA;
 
 import com.netflix.curator.framework.CuratorFramework;
 import com.netflix.curator.framework.CuratorFrameworkFactory;
@@ -80,13 +78,10 @@ public class ServerInitPlugin extends PlayPlugin {
 			if (null != ssleepRetry && !"".equals(ssleepRetry)) {
 				sleepRetry = Integer.parseInt(ssleepRetry);
 			}
-			client = CuratorFrameworkFactory
-					.builder()
-					.connectString(host)
+			client = CuratorFrameworkFactory.builder().connectString(host)
 					.namespace(namespace)
 					.retryPolicy(new RetryNTimes(retryTimes, sleepRetry))
-					.connectionTimeoutMs(timeout)
-					.build();
+					.connectionTimeoutMs(timeout).build();
 			client.start();
 			persistence = new ZKPersistence(client);
 		} catch (IOException e) {
@@ -96,15 +91,13 @@ public class ServerInitPlugin extends PlayPlugin {
 	}
 
 	public static void main(String[] args) throws Exception {
-		CuratorFramework client = CuratorFrameworkFactory
-				.builder()
-				.connectString("localhost:2181")
-				.namespace("/test")
+		CuratorFramework client = CuratorFrameworkFactory.builder()
+				.connectString("localhost:2181").namespace("/test")
 				.retryPolicy(new RetryNTimes(100, 1222))
-				.connectionTimeoutMs(12222)
-				.build();
+				.connectionTimeoutMs(12222).build();
 		client.start();
-		client.inTransaction().create().forPath("/k1", "v1".getBytes()).and().commit();
+		client.inTransaction().create().forPath("/k1", "v1".getBytes()).and()
+				.commit();
 	}
 
 }
