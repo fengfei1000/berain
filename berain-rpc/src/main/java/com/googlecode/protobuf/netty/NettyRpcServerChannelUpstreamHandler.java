@@ -117,6 +117,7 @@ class NettyRpcServerChannelUpstreamHandler extends SimpleChannelUpstreamHandler 
 				RpcController controller = new NettyRpcController();
 				Message methodResponse = null;
 				try {
+					 
 					methodResponse = blockingService.callBlockingMethod(
 							methodDescriptor, controller, methodRequest);
 				} catch (ServiceException ex) {

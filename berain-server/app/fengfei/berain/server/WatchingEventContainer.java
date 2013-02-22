@@ -108,7 +108,8 @@ public class WatchingEventContainer {
 			int eventType) {
 		try {
 			lock.lock();
-			Set<WatchableEvent> events = watchableEvents.get(key(path, clientId));
+			Set<WatchableEvent> events = watchableEvents
+					.get(key(path, clientId));
 			if (events != null) {
 				for (WatchableEvent watchableEvent : events) {
 					if (watchableEvent.getEventType() == eventType) {
@@ -131,10 +132,11 @@ public class WatchingEventContainer {
 		try {
 			lock.lock();
 			Set<String> paths = pathsForClient.remove(clientId);
-			for (String path : paths) {
-				watchableEvents.remove(key(path, clientId));
-				clientsForPath.remove(path);
-			}
+			if (paths != null)
+				for (String path : paths) {
+					watchableEvents.remove(key(path, clientId));
+					clientsForPath.remove(path);
+				}
 		} catch (Throwable e) {
 			logger.error("addWatchableEvent error", e);
 
@@ -149,10 +151,11 @@ public class WatchingEventContainer {
 		try {
 			lock.lock();
 			Set<String> clients = clientsForPath.remove(path);
-			for (String clientId : clients) {
-				watchableEvents.remove(key(path, clientId));
-				pathsForClient.remove(clientId);
-			}
+			if (clients != null)
+				for (String clientId : clients) {
+					watchableEvents.remove(key(path, clientId));
+					pathsForClient.remove(clientId);
+				}
 
 		} catch (Throwable e) {
 			logger.error("addWatchableEvent error", e);
@@ -187,9 +190,10 @@ public class WatchingEventContainer {
 	public void removeWatchableEvent(WatchableEvent event) {
 
 		Set<String> clients = clientsForPath.get(event.getPath());
-		for (String clientId : clients) {
-			removeWatchableEventByClient(clientId, event);
-		}
+		if (clients != null)
+			for (String clientId : clients) {
+				removeWatchableEventByClient(clientId, event);
+			}
 
 	}
 
@@ -197,12 +201,13 @@ public class WatchingEventContainer {
 
 		Set<WatchableEvent> events = new HashSet<>();
 		Set<String> paths = pathsForClient.get(clientId);
-		for (String path : paths) {
+		if (paths != null)
+			for (String path : paths) {
 
-			Set<WatchableEvent> eventsTemp = watchableEvents.get(key(path,
-					clientId));
-			events.addAll(eventsTemp);
-		}
+				Set<WatchableEvent> eventsTemp = watchableEvents.get(key(path,
+						clientId));
+				events.addAll(eventsTemp);
+			}
 		return events;
 
 	}
@@ -211,12 +216,13 @@ public class WatchingEventContainer {
 		Set<WatchableEvent> events = new HashSet<>();
 
 		Set<String> clients = clientsForPath.get(path);
-		for (String clientId : clients) {
+		if (clients != null)
+			for (String clientId : clients) {
 
-			Set<WatchableEvent> eventsTemp = watchableEvents.get(key(path,
-					clientId));
-			events.addAll(eventsTemp);
-		}
+				Set<WatchableEvent> eventsTemp = watchableEvents.get(key(path,
+						clientId));
+				events.addAll(eventsTemp);
+			}
 		return events;
 	}
 

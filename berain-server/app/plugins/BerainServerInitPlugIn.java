@@ -16,11 +16,11 @@ import fengfei.berain.server.protobuf.BerainServiceImpl;
 
 public class BerainServerInitPlugIn extends PlayPlugin {
 	@Override
-	public void onLoad() {
+	public void onApplicationStart() {
 
 		BasicConfigurator.configure();
 
-		NettyRpcServer server = new NettyRpcServer(
+		final NettyRpcServer server = new NettyRpcServer(
 				new NioServerSocketChannelFactory(
 						Executors.newCachedThreadPool(),
 						Executors.newCachedThreadPool()));
@@ -28,9 +28,13 @@ public class BerainServerInitPlugIn extends PlayPlugin {
 		server.registerBlockingService(BerainService
 				.newReflectiveBlockingService(new BerainServiceImpl(server
 						.getChannelGroup())));
-		Logger.info("Berain Server started for port 18023.");
-		server.serve(new InetSocketAddress(18023));
+		// Logger.trace("Berain Server started for port 18023.");
 
+		new Thread() {
+			public void run() {
+				server.serve(new InetSocketAddress(18023));
+			};
+		}.start();
 	}
 
 }

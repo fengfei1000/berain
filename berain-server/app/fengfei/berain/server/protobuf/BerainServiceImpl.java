@@ -8,6 +8,12 @@ import models.BerainResult;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.group.ChannelGroup;
 
+import play.Invoker.InvocationContext;
+import play.db.jpa.JPAPlugin;
+import play.db.jpa.NoTransaction;
+import play.db.jpa.Transactional;
+import plugins.MyJPAPlugin;
+
 import com.google.protobuf.RpcController;
 import com.google.protobuf.ServiceException;
 
@@ -37,6 +43,20 @@ public class BerainServiceImpl implements BerainService.BlockingInterface {
 		return channelGroup.find(id);
 	}
 
+	private void startTx() {
+
+		play.Play.plugin(MyJPAPlugin.class).beforeInvocation();
+
+	}
+
+	private void closeTx() {
+		play.Play.plugin(MyJPAPlugin.class).afterInvocation();
+	}
+
+	public void onInvocationException(Throwable e) {
+		play.Play.plugin(MyJPAPlugin.class).closeTx(true);
+	}
+
 	@Override
 	public LoginResponse login(RpcController controller, LoginRequest request)
 			throws ServiceException {
@@ -63,9 +83,10 @@ public class BerainServiceImpl implements BerainService.BlockingInterface {
 	@Override
 	public BoolResponse create(RpcController controller, EntryRequest request)
 			throws ServiceException {
+		startTx();
 		BerainResult<Boolean> rs = BerainHelper.create(request.getKey(),
 				request.getValue());
-
+		closeTx();
 		return BoolResponse.newBuilder().setSuccessed(rs.data)
 				.setResult(createStatusResult(rs)).build();
 	}
@@ -148,9 +169,9 @@ public class BerainServiceImpl implements BerainService.BlockingInterface {
 	@Override
 	public BoolResponse addWatchable(RpcController controller,
 			WatchableRequest request) throws ServiceException {
-		BerainResult<Boolean> rs = BerainHelper.addWatchable(request
-				.getClientId(), request.getId(), request.getEventType()
-				.getNumber());
+		BerainResult<Boolean> rs = BerainHelper.addWatchable(String
+				.valueOf(request.getClientId()), request.getId(), request
+				.getEventType().getNumber());
 		return BoolResponse.newBuilder().setSuccessed(rs.data)
 				.setResult(createStatusResult(rs)).build();
 	}
@@ -158,9 +179,9 @@ public class BerainServiceImpl implements BerainService.BlockingInterface {
 	@Override
 	public BoolResponse removeWatchable(RpcController controller,
 			WatchableRequest request) throws ServiceException {
-		BerainResult<Boolean> rs = BerainHelper.removeWatchable(request
-				.getClientId(), request.getId(), request.getEventType()
-				.getNumber());
+		BerainResult<Boolean> rs = BerainHelper.removeWatchable(String
+				.valueOf(request.getClientId()), request.getId(), request
+				.getEventType().getNumber());
 		return BoolResponse.newBuilder().setSuccessed(rs.data)
 				.setResult(createStatusResult(rs)).build();
 	}
@@ -168,7 +189,8 @@ public class BerainServiceImpl implements BerainService.BlockingInterface {
 	@Override
 	public BoolResponse removeAllListener(RpcController controller,
 			WatchableRequest request) throws ServiceException {
-		BerainResult<Boolean> rs = BerainHelper.removeAllListener(request.getClientId());
+		BerainResult<Boolean> rs = BerainHelper.removeAllListener(String
+				.valueOf(request.getClientId()));
 		return BoolResponse.newBuilder().setSuccessed(rs.data)
 				.setResult(createStatusResult(rs)).build();
 	}

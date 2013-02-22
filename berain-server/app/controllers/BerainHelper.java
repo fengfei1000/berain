@@ -3,13 +3,13 @@ package controllers;
 import static models.Status.NonExists;
 import static models.Status.ServerError;
 import static models.Status.Success;
+import static models.Status.Exists;
 
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import models.BerainResult;
 import models.RainModel;
@@ -19,7 +19,6 @@ import org.apache.commons.codec.digest.DigestUtils;
 import fengfei.berain.server.ClientContainer;
 import fengfei.berain.server.Focus;
 import fengfei.berain.server.WatchableEvent;
-import fengfei.berain.server.WatchedEvent;
 
 public class BerainHelper {
 
@@ -28,9 +27,9 @@ public class BerainHelper {
 	private static ClientContainer container = ClientContainer.get();
 
 	// --------------------------write-----------------------------//
-	public static BerainResult<Boolean> update(String id, String value) {
+	public static BerainResult<Boolean> update(String path, String value) {
 		try {
-			List<RainModel> models = RainModel.find("path=?", id).fetch();
+			List<RainModel> models = RainModel.find("path=?", path).fetch();
 			if (models != null && models.size() >= 1) {
 				RainModel model = models.get(models.size() - 1);
 				model.value = value;
@@ -45,12 +44,14 @@ public class BerainHelper {
 			return new BerainResult(ServerError, false);
 		}
 	}
-
-	public static BerainResult<Boolean> create(String id, String value) {
+	@play.db.jpa.Transactional
+	public static BerainResult<Boolean> create(String path, String value) {
 
 		try {
-			String path = id;
-			System.out.println(id + "  " + value);
+			RainModel exist = RainModel.find("path=?", path).first();
+			if (exist != null) {
+				return new BerainResult(Exists, false);
+			}
 			String parentPath = Focus.getParent(path);
 			List<RainModel> models = RainModel.find("path=?", parentPath)
 					.fetch();
@@ -83,10 +84,10 @@ public class BerainHelper {
 
 	}
 
-	public static BerainResult<Boolean> delete(String id) {
+	public static BerainResult<Boolean> delete(String path) {
 
 		try {
-			List<RainModel> models = RainModel.find("path=?", id).fetch();
+			List<RainModel> models = RainModel.find("path=?", path).fetch();
 			if (models != null && models.size() == 1) {
 				RainModel model = models.get(models.size() - 1);
 				model.delete();
@@ -102,15 +103,15 @@ public class BerainHelper {
 		}
 	}
 
-	public static BerainResult<Boolean> copy(String originalId, String newid) {
+	public static BerainResult<Boolean> copy(String originalPath, String newPath) {
 
 		try {
-			List<RainModel> models = RainModel.find("path=?", originalId)
+			List<RainModel> models = RainModel.find("path=?", originalPath)
 					.fetch();
 			RainModel orig = null;
 			if (models != null && models.size() == 1) {
 				orig = models.get(0);
-				orig.path = newid;
+				orig.path = newPath;
 				orig.id = null;
 				orig.save();
 
@@ -128,9 +129,10 @@ public class BerainHelper {
 
 	// --------------------------read-----------------------------//
 	public static BerainResult<List<Map<String, String>>> nextChildren(
-			String parentId) {
+			String parentPath) {
 		try {
-			List<RainModel> models = RainModel.find("path=?", parentId).fetch();
+			List<RainModel> models = RainModel.find("path=?", parentPath)
+					.fetch();
 			if (models != null && models.size() >= 1) {
 				RainModel model = models.get(models.size() - 1);
 				String id = model.id;
@@ -158,9 +160,9 @@ public class BerainHelper {
 		}
 	}
 
-	public static BerainResult<String> get(String id) {
+	public static BerainResult<String> get(String path) {
 		try {
-			List<RainModel> models = RainModel.find("path=?", id).fetch();
+			List<RainModel> models = RainModel.find("path=?", path).fetch();
 			if (models != null && models.size() == 1) {
 				RainModel model = models.get(models.size() - 1);
 				return new BerainResult(Success, model.value);
@@ -174,10 +176,10 @@ public class BerainHelper {
 
 	}
 
-	public static BerainResult<Map<String, String>> getFull(String id) {
+	public static BerainResult<Map<String, String>> getFull(String path) {
 
 		try {
-			List<RainModel> models = RainModel.find("path=?", id).fetch();
+			List<RainModel> models = RainModel.find("path=?", path).fetch();
 			if (models != null && models.size() == 1) {
 				RainModel model = models.get(models.size() - 1);
 				Map<String, String> data = new HashMap<String, String>();
@@ -195,10 +197,10 @@ public class BerainHelper {
 
 	}
 
-	public static BerainResult<Boolean> exists(String id) {
+	public static BerainResult<Boolean> exists(String path) {
 
 		try {
-			List<RainModel> models = RainModel.find("path=?", id).fetch();
+			List<RainModel> models = RainModel.find("path=?", path).fetch();
 			if (models != null && models.size() >= 1) {
 				return new BerainResult(Success, true);
 			} else {
@@ -211,12 +213,12 @@ public class BerainHelper {
 	}
 
 	// --------------------------Event-----------------------------//
-	public static BerainResult<Boolean> addWatchable(Integer clientId,
-			String id, int type) {
+	public static BerainResult<Boolean> addWatchable(String clientId,
+			String path, int type) {
 
 		try {
 			container.addWatchableEvent(clientId.toString(),
-					new WatchableEvent(type, id));
+					new WatchableEvent(type, path));
 			return new BerainResult(Success, true);
 
 		} catch (Throwable e) {
@@ -225,11 +227,11 @@ public class BerainHelper {
 		}
 	}
 
-	public static BerainResult<Boolean> removeWatchable(Integer clientId,
-			String id, int type) {
+	public static BerainResult<Boolean> removeWatchable(String clientId,
+			String path, int type) {
 		try {
 			container.removeWatchableEvent(clientId.toString(),
-					new WatchableEvent(type, id));
+					new WatchableEvent(type, path));
 			return new BerainResult(Success, true);
 
 		} catch (Throwable e) {
@@ -240,9 +242,9 @@ public class BerainHelper {
 	}
 
 	public static BerainResult<Boolean> removeWatchedEvent(String clientId,
-			String id, int type) {
+			String path, int type) {
 		try {
-			container.removeWatchedEvent(clientId, id, type);
+			container.removeWatchedEvent(clientId, path, type);
 			return new BerainResult(Success, true);
 
 		} catch (Throwable e) {
@@ -252,7 +254,7 @@ public class BerainHelper {
 
 	}
 
-	public static BerainResult<Boolean> removeAllListener(Integer clientId) {
+	public static BerainResult<Boolean> removeAllListener(String clientId) {
 
 		try {
 			container.clearAllWatchableEvent(clientId.toString());

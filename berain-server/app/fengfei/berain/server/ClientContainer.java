@@ -93,47 +93,51 @@ public class ClientContainer {
 			lock.lock();
 
 			Set<String> clients = eventContainer.getClientsByPath(path);
-			for (String clientId : clients) {
-				Set<WatchableEvent> events = eventContainer.getWatchableEvents(
-						path, clientId);
-				if (events != null && events.size() > 0) {
-					WatchedContainer watchedContainer = watcheds.get(clientId);
-					if (watchedContainer == null) {
-						watchedContainer = new WatchedContainer(eventContainer);
-					}
-					watchedContainer.addWatchedEvent(path, eventType);
-					watcheds.put(clientId, watchedContainer);
+			if (clients != null)
+				for (String clientId : clients) {
+					Set<WatchableEvent> events = eventContainer
+							.getWatchableEvents(path, clientId);
+					if (events != null && events.size() > 0) {
+						WatchedContainer watchedContainer = watcheds
+								.get(clientId);
+						if (watchedContainer == null) {
+							watchedContainer = new WatchedContainer(
+									eventContainer);
+						}
+						watchedContainer.addWatchedEvent(path, eventType);
+						watcheds.put(clientId, watchedContainer);
 
-					Set<WatchedEvent> watchedEvents = watchedContainer
-							.getWatchedEvents(path);
-					int id = Integer.parseInt(clientId);
-					StatusResult sr = StatusResult.newBuilder().setCode(0)
-							.setMessage("successed.").build();
-					WatchedResponse.Builder builder = BerainProto.WatchedResponse
-							.newBuilder().setResult(sr);
-					for (WatchedEvent watchedEvent : watchedEvents) {
-						BerainProto.WatchedEvent event = BerainProto.WatchedEvent
+						Set<WatchedEvent> watchedEvents = watchedContainer
+								.getWatchedEvents(path);
+						int id = Integer.parseInt(clientId);
+						StatusResult sr = StatusResult.newBuilder().setCode(0)
+								.setMessage("successed.").build();
+						WatchedResponse.Builder builder = BerainProto.WatchedResponse
+								.newBuilder().setResult(sr);
+						for (WatchedEvent watchedEvent : watchedEvents) {
+							BerainProto.WatchedEvent event = BerainProto.WatchedEvent
+									.newBuilder()
+									.setEventType(
+											BerainProto.EventType
+													.valueOf(watchedEvent
+															.getEventType()
+															.getIntValue()))
+									.setPath(watchedEvent.getPath()).build();
+							builder.addWatchedEvents(event);
+						}
+
+						WatchedResponse watchedResponse = builder.build();
+						RpcResponse response = NettyRpcProto.RpcResponse
 								.newBuilder()
-								.setEventType(
-										BerainProto.EventType
-												.valueOf(watchedEvent
-														.getEventType()
-														.getIntValue()))
-								.setPath(watchedEvent.getPath()).build();
-						builder.addWatchedEvents(event);
-					}
+								.setId(id)
+								.setResponseMessage(
+										watchedResponse.toByteString()).build();
+						Channel channel = getChannel(id);
+						channel.write(response);
 
-					WatchedResponse watchedResponse = builder.build();
-					RpcResponse response = NettyRpcProto.RpcResponse
-							.newBuilder().setId(id)
-							.setResponseMessage(watchedResponse.toByteString())
-							.build();
-					Channel channel = getChannel(id);
-					channel.write(response);
+					}
 
 				}
-
-			}
 
 		} catch (Throwable e) {
 			logger.error("addWatchedEvent error", e);
