@@ -1,17 +1,17 @@
 package models;
 
-public class BerainResult {
+public class BerainResult<T> {
 
 	public int code;
 	public String message;
-	public Object data;
+	public T data;
 
-	public BerainResult(int code, String message, Object data) {
+	public BerainResult(int code, String message, T data) {
 		this(code, message);
 		this.data = data;
 	}
 
-	public BerainResult(Status status, Object data) {
+	public BerainResult(Status status, T data) {
 		this(status);
 		this.data = data;
 	}
@@ -46,17 +46,18 @@ public class BerainResult {
 		this.message = message;
 	}
 
-	public Object getData() {
+	public T getData() {
 		return data;
 	}
 
-	public void setData(Object data) {
+	public void setData(T data) {
 		this.data = data;
 	}
 
 	@Override
 	public String toString() {
-		return "BerainResult [code=" + code + ", message=" + message + ", data=" + data + "]";
+		return "BerainResult [code=" + code + ", message=" + message
+				+ ", data=" + data + "]";
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 public enum Status {
 	Success(0, "success."),
 	Fail(100, "fail."),
+	Exists(101, "Exists."),
 	NonExists(200, "No exists."),
 	ServerError(300, "server error.");
 

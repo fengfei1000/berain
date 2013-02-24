@@ -12,7 +12,7 @@ public class WatchedService implements Runnable, Executor {
 	private ExecutorService executor = Executors.newFixedThreadPool(Runtime
 			.getRuntime()
 			.availableProcessors() * 2 + 1);
-	private Set<BerainClient> berainClients = new HashSet<>();
+	private Set<BerainHttpClient> berainClients = new HashSet<>();
 	private long sleepMillis = 3000;
 
 	private boolean isRunning = false;
@@ -43,7 +43,7 @@ public class WatchedService implements Runnable, Executor {
 
 		while (isRunning) {
 			try {
-				for (BerainClient client : berainClients) {
+				for (BerainHttpClient client : berainClients) {
 					executor.execute(client);
 				}
 
@@ -60,7 +60,7 @@ public class WatchedService implements Runnable, Executor {
 		executor.execute(command);
 	}
 
-	public void addBerainClient(BerainClient berainClient) {
+	public void addBerainClient(BerainHttpClient berainClient) {
 		berainClients.add(berainClient);
 	}
 
