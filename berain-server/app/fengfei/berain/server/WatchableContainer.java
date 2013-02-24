@@ -20,10 +20,9 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 public class WatchableContainer {
 
-	private final static Logger logger = LoggerFactory
-			.getLogger(WatchableContainer.class);
+	private final static Logger logger = LoggerFactory.getLogger(WatchableContainer.class);
 	private final Lock lock = new ReentrantLock();
-	private final Map<String, Set<WatchableEvent>> watchableEvents = new ConcurrentHashMap<>();// key=path
+	private final Map<String, Set<WatchableEvent>> watchableEvents = new ConcurrentHashMap<>();
 
 	public WatchableContainer() {
 	}

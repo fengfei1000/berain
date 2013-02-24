@@ -51,9 +51,15 @@ public class RainModel extends GenericModel {
 	@Column(name = "smd5", length = 32, nullable = true)
 	public String md5;
 
-	@Column(name = "create_at", nullable = false, columnDefinition = " datetime NOT NULL DEFAULT '2012-08-28 14:00:00'")
+	@Column(
+			name = "create_at",
+			nullable = false,
+			columnDefinition = " datetime NOT NULL DEFAULT '2012-08-28 14:00:00'")
 	public Date createAt;
-	@Column(name = "update_at", nullable = false, columnDefinition = " datetime NOT NULL DEFAULT '2012-08-28 14:00:00'")
+	@Column(
+			name = "update_at",
+			nullable = false,
+			columnDefinition = " datetime NOT NULL DEFAULT '2012-08-28 14:00:00'")
 	public Date updateAt;
 
 	@Column(nullable = false)
@@ -161,51 +167,43 @@ public class RainModel extends GenericModel {
 
 	@Override
 	public String toString() {
-		return "RainModel [id=" + id + ", pid=" + pid + ", key=" + key
-				+ ", path=" + path + ", value=" + value + ", md5=" + md5
-				+ ", createAt=" + createAt + ", updateAt=" + updateAt
-				+ ", leaf=" + leaf + "]";
+		return "RainModel [id=" + id + ", pid=" + pid + ", key=" + key + ", path=" + path + ", value=" + value + ", md5=" + md5 + ", createAt=" + createAt + ", updateAt=" + updateAt + ", leaf=" + leaf + "]";
 	}
 
 	@Override
 	public <T extends JPABase> T save() {
 		T t = super.save();
-		container
-				.fireWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
-		container.fireWatchedEvent(new WatchedEvent(EventType.ChildrenChanged,
-				Focus.getParent(path)));
-
+		container.addWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
+		container.addWatchedEvent(new WatchedEvent(EventType.ChildrenChanged, Focus
+				.getParent(path)));
 		return t;
 	}
 
 	@Override
 	public <T extends JPABase> T merge() {
 		T t = super.merge();
-		container
-				.fireWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
-		container.fireWatchedEvent(new WatchedEvent(EventType.ChildrenChanged,
-				Focus.getParent(path)));
+		container.addWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
+		container.addWatchedEvent(new WatchedEvent(EventType.ChildrenChanged, Focus
+				.getParent(path)));
 		return t;
 	}
 
 	@Override
 	public boolean create() {
 		boolean isUpdated = super.create();
-		container
-				.fireWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
-		container.fireWatchedEvent(new WatchedEvent(EventType.ChildrenChanged,
-				Focus.getParent(path)));
+		container.addWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
+		container.addWatchedEvent(new WatchedEvent(EventType.ChildrenChanged, Focus
+				.getParent(path)));
 		return isUpdated;
 	}
 
 	@Override
 	public <T extends JPABase> T delete() {
 		T t = super.delete();
-		container.fireWatchedEvent(new WatchedEvent(EventType.Deleted, path));
-		container
-				.fireWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
-		container.fireWatchedEvent(new WatchedEvent(EventType.ChildrenChanged,
-				Focus.getParent(path)));
+		container.addWatchedEvent(new WatchedEvent(EventType.Deleted, path));
+		container.addWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
+		container.addWatchedEvent(new WatchedEvent(EventType.ChildrenChanged, Focus
+				.getParent(path)));
 		return t;
 	}
 
@@ -213,10 +211,9 @@ public class RainModel extends GenericModel {
 	public <T extends JPABase> T refresh() {
 
 		T t = super.refresh();
-		container
-				.fireWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
-		container.fireWatchedEvent(new WatchedEvent(EventType.ChildrenChanged,
-				Focus.getParent(path)));
+		container.addWatchedEvent(new WatchedEvent(EventType.DataChanged, path));
+		container.addWatchedEvent(new WatchedEvent(EventType.ChildrenChanged, Focus
+				.getParent(path)));
 		return t;
 	}
 

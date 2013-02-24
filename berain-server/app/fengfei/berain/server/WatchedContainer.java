@@ -21,14 +21,13 @@ import com.google.common.util.concurrent.MoreExecutors;
 
 public class WatchedContainer {
 
-	private final static Logger logger = LoggerFactory
-			.getLogger(WatchedContainer.class);
+	private final static Logger logger = LoggerFactory.getLogger(WatchedContainer.class);
 
-	private WatchingEventContainer watchableContainer;
+	private WatchableContainer watchableContainer;
 	private final Lock lock = new ReentrantLock();
 	private final Map<String, Set<WatchedEvent>> watchedEvents = new ConcurrentHashMap<>();
 
-	public WatchedContainer(WatchingEventContainer watchableContainer) {
+	public WatchedContainer(WatchableContainer watchableContainer) {
 		this.watchableContainer = watchableContainer;
 	}
 
@@ -39,16 +38,14 @@ public class WatchedContainer {
 	public void addWatchedEvent(String path, int eventType) {
 		try {
 			lock.lock();
-			Set<WatchableEvent> watchableEvents = watchableContainer
-					.getWatchableEventByPath(path);
-			WatchableEvent event = new WatchableEvent(eventType, path);
-			if (watchableEvents.contains(event)) {
-				Set<WatchedEvent> events = watchedEvents.get(path);
+			WatchableEvent event = watchableContainer.getWatchableEvent(path, eventType);
+			if (event != null) {
+				Set<WatchedEvent> events = watchedEvents.get(event.getPath());
 				if (events == null) {
 					events = new HashSet<>();
 				}
 				events.add(event.wrap());
-				watchedEvents.put(path, events);
+				watchedEvents.put(event.getPath(), events);
 			}
 
 		} catch (Throwable e) {
