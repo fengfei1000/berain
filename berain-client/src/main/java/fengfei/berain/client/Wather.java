@@ -1,18 +1,17 @@
 package fengfei.berain.client;
 
-public abstract class Wather implements Runnable {
+public abstract class Wather  implements Runnable {
 
-	private BerainEntry data;
+	private BerainWatchedEvent event;
 
 	@Override
 	public void run() {
-		call(data);
+		call(event);
 	}
 
-	public void setData(BerainEntry data) {
-		this.data = data;
+	public void setEvent(BerainWatchedEvent event) {
+		this.event = event;
 	}
 
-	public abstract void call(BerainEntry data);
-
+	public abstract void call(BerainWatchedEvent event);
 }

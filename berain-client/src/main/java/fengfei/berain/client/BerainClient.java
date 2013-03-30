@@ -3,45 +3,46 @@ package fengfei.berain.client;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 
- * @author wtt
- * 
- */
 public interface BerainClient {
+
+	void start();
 
 	/**
 	 * if has password
 	 */
-	void login(String username, String password);
+	void login(String username, String password) throws Exception;
 
 	// --------------------------write-----------------------------//
-	boolean update(String path, String value);
+	boolean update(String path, String value) throws Exception;
 
-	boolean create(String path, String value);
+	boolean create(String path, String value) throws Exception;
 
-	boolean delete(String path);
+	boolean delete(String path) throws Exception;
 
-	boolean copy(String originalPath, String newPath);
+	boolean copy(String originalPath, String newPath) throws Exception;
 
 	// --------------------------read-----------------------------//
-	List<BerainEntry> nextChildren(String parentPath);
+	List<BerainEntry> nextChildren(String parentPath) throws Exception;
 
-	String get(String path);
+	String get(String path) throws Exception;
 
-	BerainEntry getFull(String path);
+	BerainEntry getFull(String path) throws Exception;
 
-	boolean exists(String path);
+	boolean exists(String path) throws Exception;
 
 	// --------------------------Event-----------------------------//
-	void addWatchable(String path, int type, Wather wather);
+	public void addChildrenChangedWatcher(final String path, final Wather wather)
+			throws Exception;
 
-	void addWatchable(String path, EventType type, Wather wather);
+	public void addNodeChangedWatcher(final String path, final Wather wather)
+			throws Exception;
 
-	void removeWatchable(String path, int type);
 
-	Map<String, List<WatchedEvent>> listChangedNodes();
+	void addWatchable(String path, EventType type, Wather wather) throws Exception;
 
-	void removeAllListener();
+	void removeWatchable(String path, int type) throws Exception;
 
+	Map<String, List<BerainWatchedEvent>> listChangedNodes() throws Exception;
+
+	void removeAllListener() throws Exception;
 }

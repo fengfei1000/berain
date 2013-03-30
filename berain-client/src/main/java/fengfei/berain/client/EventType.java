@@ -30,7 +30,6 @@ public enum EventType {
 			return EventType.DataChanged;
 		case 4:
 			return EventType.ChildrenChanged;
-
 		default:
 			throw new RuntimeException("Invalid integer value for conversion to EventType");
 		}

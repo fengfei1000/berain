@@ -1,30 +1,30 @@
 package fengfei.berain.client;
 
-public class WatchedEvent {
+public class BerainWatchedEvent {
 
-	private EventType eventType;
-	private String path;
-	private Wather wather;
+	protected EventType eventType;
+	protected String path;
+	protected Wather wather;
 
-	public WatchedEvent() {
+	public BerainWatchedEvent() {
 	}
 
-	public WatchedEvent(EventType eventType, String path, Wather wather) {
+	public BerainWatchedEvent(EventType eventType, String path, Wather wather) {
 
 		this.eventType = eventType;
 		this.path = path;
 		this.wather = wather;
 	}
 
-	public WatchedEvent(int eventType, String path, Wather wather) {
+	public BerainWatchedEvent(int eventType, String path, Wather wather) {
 		this(EventType.fromInt(eventType), path, wather);
 	}
 
-	public WatchedEvent(EventType eventType, String path) {
+	public BerainWatchedEvent(EventType eventType, String path) {
 		this(eventType, path, null);
 	}
 
-	public WatchedEvent(int eventType, String path) {
+	public BerainWatchedEvent(int eventType, String path) {
 		this(eventType, path, null);
 	}
 
@@ -65,7 +65,7 @@ public class WatchedEvent {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		WatchedEvent other = (WatchedEvent) obj;
+		BerainWatchedEvent other = (BerainWatchedEvent) obj;
 		if (eventType != other.eventType)
 			return false;
 		if (path == null) {

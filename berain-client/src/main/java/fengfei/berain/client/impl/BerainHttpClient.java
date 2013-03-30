@@ -1,4 +1,4 @@
-package fengfei.berain.client;
+package fengfei.berain.client.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +22,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import fengfei.berain.client.BerainClient;
+import fengfei.berain.client.BerainEntry;
+import fengfei.berain.client.BerainWatchedEvent;
+import fengfei.berain.client.EventType;
+import fengfei.berain.client.Wather;
+
 public class BerainHttpClient implements Runnable, BerainClient {
 
 	public final static String COOKIE_USERNAME = "berain_user";
@@ -32,7 +38,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	private static WatchedService watchedService = WatchedService.get();
 	private String clientId;
 	public WatchedContainer watched = new WatchedContainer();
-
 	private static Queue<DefaultHttpClient> httpClients = new ConcurrentLinkedQueue<>();
 	String baseurl;
 	private String username;
@@ -78,7 +83,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	public void login(String username, String password) {
 		DefaultHttpClient httpclient = getHttpClient();
 		try {
-
 			List<Cookie> cookies = httpclient.getCookieStore().getCookies();
 			if (cookies.isEmpty()) {
 				System.out.println("None");
@@ -126,20 +130,17 @@ public class BerainHttpClient implements Runnable, BerainClient {
 		client.addWatchable("/berain/w1", EventType.DataChanged, new Wather() {
 
 			@Override
-			public void call(BerainEntry data) {
-				System.out.println("DataChanged:================ " + data);
-
+			public void call(BerainWatchedEvent event) {
+				System.out.println("DataChanged:================ " + event);
 			}
 		});
 		client.addWatchable("/berain/w1", EventType.ChildrenChanged, new Wather() {
 
 			@Override
-			public void call(BerainEntry data) {
-				System.out.println("ChildrenChanged:================ " + data);
-
+			public void call(BerainWatchedEvent event) {
+				System.out.println("ChildrenChanged:================ " + event);
 			}
 		});
-
 		List<BerainEntry> s = client.nextChildren("/berain");
 		System.out.println(s);
 	}
@@ -153,7 +154,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 */
 	@Override
 	public boolean update(String path, String value) {
-
 		try {
 			BerainResult<Boolean> br = httpRequest(
 					null,
@@ -164,9 +164,7 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					value);
 			return br.data;
 		} catch (Throwable e) {
-
 			e.printStackTrace();
-
 		}
 		return false;
 	}
@@ -186,9 +184,7 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					builder.setParameter(params[i++], params[i]);
 				}
 			}
-
 			httpget = new HttpGet(builder.build());
-
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			String responseBody = httpclient.execute(httpget, responseHandler);
 			System.out.println(responseBody);
@@ -197,13 +193,11 @@ public class BerainHttpClient implements Runnable, BerainClient {
 			} else {
 				br = mapper.readValue(responseBody, clazz);
 			}
-
 		} finally {
 			httpget.releaseConnection();
 			returnHttpClient(httpclient);
 		}
 		return br;
-
 	}
 
 	/*
@@ -214,7 +208,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 */
 	@Override
 	public boolean create(String path, String value) {
-
 		try {
 			BerainResult<Boolean> br = httpRequest(
 					null,
@@ -225,12 +218,9 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					value);
 			return br.data;
 		} catch (Throwable e) {
-
 			e.printStackTrace();
-
 		}
 		return false;
-
 	}
 
 	/*
@@ -240,17 +230,13 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 */
 	@Override
 	public boolean delete(String path) {
-
 		try {
 			BerainResult<Boolean> br = httpRequest(null, "/berain/delete", "path", path);
 			return br.data;
 		} catch (Throwable e) {
-
 			e.printStackTrace();
-
 		}
 		return false;
-
 	}
 
 	/*
@@ -261,7 +247,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 */
 	@Override
 	public boolean copy(String originalPath, String newPath) {
-
 		try {
 			BerainResult<Boolean> br = httpRequest(
 					null,
@@ -272,12 +257,9 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					newPath);
 			return br.data;
 		} catch (Throwable e) {
-
 			e.printStackTrace();
-
 		}
 		return false;
-
 	}
 
 	// --------------------------read-----------------------------//
@@ -288,7 +270,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 */
 	@Override
 	public List<BerainEntry> nextChildren(String parentId) {
-
 		try {
 			BerainResult<List<BerainEntry>> br = httpRequest(
 					BerainEntryResults.class,
@@ -297,12 +278,9 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					parentId);
 			return br.data;
 		} catch (Throwable e) {
-
 			e.printStackTrace();
-
 		}
 		return null;
-
 	}
 
 	/*
@@ -312,17 +290,13 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 */
 	@Override
 	public String get(String path) {
-
 		try {
 			BerainResult<String> br = httpRequest(null, "/berain/get", "path", path);
 			return br.data;
 		} catch (Throwable e) {
-
 			e.printStackTrace();
-
 		}
 		return null;
-
 	}
 
 	/*
@@ -340,12 +314,9 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					path);
 			return br.data;
 		} catch (Throwable e) {
-
 			e.printStackTrace();
-
 		}
 		return null;
-
 	}
 
 	private static class BerainEntryResult extends BerainResult<BerainEntry> {
@@ -377,25 +348,26 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 * @see fengfei.berain.client.BerainClient#addWatchable(java.lang.String,
 	 * int, fengfei.berain.client.Wather)
 	 */
-	@Override
-	public void addWatchable(String path, int type, Wather wather) {
-
-		try {
-			BerainResult<Boolean> br = httpRequest(
-					null,
-					"/berain/addWatchable",
-					"clientId",
-					clientId,
-					"path",
-					path,
-					"type",
-					String.valueOf(type));
-			watched.addWatchedEvent(new WatchedEvent(EventType.fromInt(type), path, wather));
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
-
+	// @Override
+	// public void addWatchable(String path, int type, Wather wather) {
+	// try {
+	// BerainResult<Boolean> br = httpRequest(
+	// null,
+	// "/berain/addWatchable",
+	// "clientId",
+	// clientId,
+	// "path",
+	// path,
+	// "type",
+	// String.valueOf(type));
+	// watched.addWatchedEvent(new BerainWatchedEvent(
+	// EventType.fromInt(type),
+	// path,
+	// wather));
+	// } catch (Throwable e) {
+	// e.printStackTrace();
+	// }
+	// }
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -404,7 +376,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 */
 	@Override
 	public void addWatchable(String path, EventType type, Wather wather) {
-
 		try {
 			BerainResult<Boolean> br = httpRequest(
 					null,
@@ -415,10 +386,20 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					path,
 					"type",
 					String.valueOf(type.getIntValue()));
-			watched.addWatchedEvent(new WatchedEvent(type, path, wather));
+			watched.addWatchedEvent(new BerainWatchedEvent(type, path, wather));
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void addChildrenChangedWatcher(String path, Wather wather) throws Exception {
+		addWatchable(path, EventType.ChildrenChanged, wather);
+	}
+
+	@Override
+	public void addNodeChangedWatcher(String path, Wather wather) throws Exception {
+		addWatchable(path, EventType.DataChanged, wather);
 	}
 
 	/*
@@ -439,11 +420,10 @@ public class BerainHttpClient implements Runnable, BerainClient {
 					path,
 					"type",
 					String.valueOf(type));
-			watched.removeWatchedEvent(new WatchedEvent(EventType.fromInt(type), path));
+			watched.removeWatchedEvent(new BerainWatchedEvent(EventType.fromInt(type), path));
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	private void removeRemoteWatchedEvent(String path, int type) {
@@ -460,7 +440,6 @@ public class BerainHttpClient implements Runnable, BerainClient {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	/*
@@ -469,16 +448,15 @@ public class BerainHttpClient implements Runnable, BerainClient {
 	 * @see fengfei.berain.client.BerainClient#listChangedNodes()
 	 */
 	@Override
-	public Map<String, List<WatchedEvent>> listChangedNodes() {
+	public Map<String, List<BerainWatchedEvent>> listChangedNodes() {
 		DefaultHttpClient httpclient = getHttpClient();
 		try {
-
 			HttpPost httpost = new HttpPost(baseurl + "/berain/listChangedNodes");
 			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-			Map<String, Set<WatchedEvent>> watchedEvents = watched.getWatchedEvents();
-			for (Entry<String, Set<WatchedEvent>> entry : watchedEvents.entrySet()) {
-				Set<WatchedEvent> ents = entry.getValue();
-				for (WatchedEvent event : ents) {
+			Map<String, Set<BerainWatchedEvent>> watchedEvents = watched.getWatchedEvents();
+			for (Entry<String, Set<BerainWatchedEvent>> entry : watchedEvents.entrySet()) {
+				Set<BerainWatchedEvent> ents = entry.getValue();
+				for (BerainWatchedEvent event : ents) {
 					nvps.add(new BasicNameValuePair("paths", event.getPath()));
 					nvps.add(new BasicNameValuePair("types", String.valueOf(event
 							.getEventType()
@@ -489,7 +467,7 @@ public class BerainHttpClient implements Runnable, BerainClient {
 			httpost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 			String responseBody = httpclient.execute(httpost, responseHandler);
-			BerainResult<Map<String, List<WatchedEvent>>> br = mapper.readValue(
+			BerainResult<Map<String, List<BerainWatchedEvent>>> br = mapper.readValue(
 					responseBody,
 					WatchedEventResult.class);
 			return br.data;
@@ -513,14 +491,12 @@ public class BerainHttpClient implements Runnable, BerainClient {
 		// } catch (Throwable e) {
 		// e.printStackTrace();
 		// }
-
 		return null;
 	}
 
 	public static class WatchedEventResult
 			extends
-			BerainResult<Map<String, List<WatchedEvent>>> {
-
+			BerainResult<Map<String, List<BerainWatchedEvent>>> {
 	}
 
 	/*
@@ -541,40 +517,37 @@ public class BerainHttpClient implements Runnable, BerainClient {
 			} catch (Throwable e) {
 				e.printStackTrace();
 			}
-
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Override
 	public void run() {
 		try {
-			Map<String, Set<WatchedEvent>> all = watched.getWatchedEvents();
-			Map<String, List<WatchedEvent>> watchedEvents = this.listChangedNodes();
+			Map<String, Set<BerainWatchedEvent>> all = watched.getWatchedEvents();
+			Map<String, List<BerainWatchedEvent>> watchedEvents = this.listChangedNodes();
 			if (watchedEvents == null) {
 				return;
 			}
-			for (Entry<String, List<WatchedEvent>> entry : watchedEvents.entrySet()) {
+			for (Entry<String, List<BerainWatchedEvent>> entry : watchedEvents.entrySet()) {
 				String path = entry.getKey();
-				List<WatchedEvent> events = entry.getValue();
-				Set<WatchedEvent> ableEvents = all.get(path);
+				List<BerainWatchedEvent> events = entry.getValue();
+				Set<BerainWatchedEvent> ableEvents = all.get(path);
 				if (ableEvents == null) {
 					continue;
 				}
-				for (WatchedEvent event : events) {
-					for (WatchedEvent ableEvent : ableEvents) {
+				for (BerainWatchedEvent event : events) {
+					for (BerainWatchedEvent ableEvent : ableEvents) {
 						// System.out.printf(
 						// " %s ==  %s\n",
 						// event.toString(),
 						// ableEvent.toString());
 						if (ableEvent.equals(event)) {
-
-							BerainEntry data = this.getFull(path);
+							// BerainEntry data = this.getFull(path);
 							Wather wather = ableEvent.getWather();
 							// sync
-							wather.call(data);
+							wather.call(ableEvent);
 							// async
 							// wather.setData(data);
 							// watchedService.execute(wather);
@@ -584,14 +557,10 @@ public class BerainHttpClient implements Runnable, BerainClient {
 									.getIntValue());
 						}
 					}
-
 				}
 			}
-
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-
 	}
-
 }

@@ -1,4 +1,4 @@
-package fengfei.berain.client;
+package fengfei.berain.client.impl;
 
 public class BerainResult<T> {
 

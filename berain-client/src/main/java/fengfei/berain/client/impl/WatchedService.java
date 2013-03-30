@@ -1,10 +1,12 @@
-package fengfei.berain.client;
+package fengfei.berain.client.impl;
 
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import fengfei.berain.client.BerainClient;
 
 public class WatchedService implements Runnable, Executor {
 

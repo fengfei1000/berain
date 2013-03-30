@@ -1,4 +1,4 @@
-package fengfei.berain.client;
+package fengfei.berain.client.impl;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -10,28 +10,30 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import fengfei.berain.client.BerainWatchedEvent;
+
 public class WatchedContainer {
 
 	private final Logger logger = LoggerFactory.getLogger(getClass());
  
 	private final Lock lock = new ReentrantLock();
-	private final Map<String, Set<WatchedEvent>> watchedEvents = new ConcurrentHashMap<>();
+	private final Map<String, Set<BerainWatchedEvent>> watchedEvents = new ConcurrentHashMap<>();
 
  
 
 	public WatchedContainer() {
 	}
 
-	public Set<WatchedEvent> getWatchedEvents(String path) {
+	public Set<BerainWatchedEvent> getWatchedEvents(String path) {
 		return watchedEvents.get(path);
 	}
 
-	public void addWatchedEvent(WatchedEvent event) {
+	public void addWatchedEvent(BerainWatchedEvent event) {
 		try {
 			lock.lock();
 
 			if (event != null) {
-				Set<WatchedEvent> events = watchedEvents.get(event.getPath());
+				Set<BerainWatchedEvent> events = watchedEvents.get(event.getPath());
 				if (events == null) {
 					events = new HashSet<>();
 				}
@@ -47,11 +49,11 @@ public class WatchedContainer {
 		}
 	}
 
-	public void removeWatchedEvent(WatchedEvent event) {
+	public void removeWatchedEvent(BerainWatchedEvent event) {
 
 		try {
 			lock.lock();
-			Set<WatchedEvent> events = watchedEvents.get(event.getPath());
+			Set<BerainWatchedEvent> events = watchedEvents.get(event.getPath());
 			if (events == null) {
 				events = new HashSet<>();
 			}
@@ -74,7 +76,7 @@ public class WatchedContainer {
 		return watchedEvents.size();
 	}
 
-	public Map<String, Set<WatchedEvent>> getWatchedEvents() {
+	public Map<String, Set<BerainWatchedEvent>> getWatchedEvents() {
 		return watchedEvents;
 	}
 
